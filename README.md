@@ -46,8 +46,8 @@
 <hr/>
 
 - [ ] Hacer HTML de:
-  - [ ] Página principal.
-  - [ ] Juego de Sudoku.
+  - [x] Página principal.
+  - [x] Juego de Sudoku.
   - [ ] Estadísticas.
   - [ ] Registro.
   - [ ] Inicio de sesión.
