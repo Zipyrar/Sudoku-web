@@ -30,7 +30,14 @@
 </ul>
 <br/>
 <h3>📁<u>Descargar, descomprimir y ejecutar el proyecto</u>📂</h3>
-
+<p>Ve al Github principal, pincha en '<> Code' y le das a <b>'Download ZIP'</b>.</p>
+<p>Descomprime el archivo haciendo clic derecho, y pulsando en la opción 'Extraer todo' o 'Extraer aquí'.</p>
+<p><b>Advertencia: no mover ningún archivo de lugar o cambiarle el nombre, podría provocar errores.</b></p>
+<p>Una vez descomprimido, se debe abrir con 'Visual Studio Code' (si no lo tiene, use este enlace para descargarlo. https://code.visualstudio.com/ Lo descarga, instala, y ya lo tendría).</p>
+<p>Abre el programa de Visual, le da a 'File' -> 'Open Folder...' y busca la carpeta de 'Sudoku-web' descomprimida.</p>
+<p>Una vez listo, le da al símbolo de cuadrados llamado 'Extensions'. Busca la extensión 'Live Server' y la instala.</p>
+<p>Ya con todo listo, va al html, y le da clic derecho y pulsa en la opción 'Open with Live Server'.</p>
+<p>Ya podrá usar la aplicación sin inconvenientes.</p>
 <br/>
 <h3><u>Tecnologías usadas</u></h3>
 <hr/>
