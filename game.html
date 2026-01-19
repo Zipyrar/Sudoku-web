@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <title>Sudoku Web</title>
+</head>
+<body>
+    <!-- Cabecera -->
+    <header>
+        <div class="header-container">
+            <h1 class="title">Sudoku Web</h1>
+            <nav>
+                <!-- Navegación principal -->
+                <ul class="nav-list">
+                    <li><a href="#">Volver a inicio</a></li>
+                    <li><a href="#">Estadísticas</a></li>
+                    <li><a href="#">Iniciar sesión</a></li>
+                    <li><a href="#">Registrarse</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Principal -->
+    <main>
+        <!-- Cabecera del juego -->
+        <section class="game-header">
+            <div>
+                <h2>Partida de Sudoku</h2>
+                <p>
+                    Selecciona dificultad, inicia la partida y completa el tablero sin repetir números en filas, columnas y bloques.
+                </p>
+            </div>
+        
+            <!-- Selector de dificultad -->
+            <form class="difficulty-form" action="#" method="get">
+                <label for="difficulty" class="one-difficulty">Dificultad</label>
+                    <select id="difficulty" name="difficulty">
+                        <option value="easy">Fácil</option>
+                        <option value="medium">Media</option>
+                        <option value="hard">Difícil</option>
+                </select>
+
+                <button type="button" class="btn btn-primary" id="btn-new-game">
+                    Nueva partida
+                </button>
+                <label class="timer" id="timer">00:00</label>
+            </form>
+        </section>
+
+        <section class="game-layout">
+            <!-- Tablero -->
+            <section class="board-section">
+            <div class="board" role="grid">
+
+            <!-- Fila 1 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="8">
+            </div>
+
+            <!-- Fila 2 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="8">
+            </div>
+
+            <!-- Fila 3 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="8">
+            </div>
+
+            <!-- Fila 4 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="8">
+            </div>
+
+            <!-- Fila 5 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="8">
+            </div>
+
+            <!-- Fila 6 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="8">
+            </div>
+
+            <!-- Fila 7 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="8">
+            </div>
+
+            <!-- Fila 8 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="8">
+            </div>
+
+            <!-- Fila 9 -->
+            <div class="board-row" role="row">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="0">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="1">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="2">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="3">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="4">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="5">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="6">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="7">
+            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="8">
+            </div>
+
+            </div>
+
+            <!-- Mensajes -->
+            <p class="status" id="status"></p>
+            </section>
+
+            <!-- Panel lateral -->
+            <aside class="side-panel">
+                <div class="panel-card">
+                    <h3>Opciones</h3>
+                    <div class="panel-actions">
+                        <button type="button" class="btn" id="btn-check">Comprobar</button>
+                        <button type="button" class="btn" id="btn-reset">Reiniciar</button>
+                        <button type="button" class="btn" id="btn-hint">Pista</button>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Guardar / Cargar</h3>
+                    <div class="panel-actions">
+                        <button type="button" class="btn" id="btn-save">Guardar partida</button>
+                        <button type="button" class="btn" id="btn-load">Cargar partida</button>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Ayuda</h3>
+                    <ul class="help-list">
+                        <li>No repitas números en una misma fila.</li>
+                        <li>No repitas números en una misma columna.</li>
+                        <li>No repitas números en un bloque 3x3.</li>
+                        <li>Fíjate en los números por las cuatro direcciones del hueco.</li>
+                    </ul>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+    </footer>
+</body>
+</html>
