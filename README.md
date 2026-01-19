@@ -37,13 +37,23 @@
 <br/>
 <h3><u>Tareas</u></h3>
 <hr/>
-<h4>HTML:</h4>
-<ul>
-  <li>Página principal</li>
-  <li>Juego de Sudoku</li>
-  <li>estadísticas</li>
-  <li>Registro</li>
-  <li>Inicio de sesión</li>
+
+- [ ] Hacer HTML de:
+  - [ ] Página principal.
+  - [ ] Juego de Sudoku.
+  - [ ] Estadísticas.
+  - [ ] Registro.
+  - [ ] Inicio de sesión.
+
+- [ ] Crear los CSS para los HTML (concretar a detalle más adelante).
+- [ ] Hacer PHP para:
+  - [ ] Registro.
+  - [ ] Inicio de sesión.
+  - [ ] Cerrar sesión.
+  - [ ] Juego de Sudoku.
+  - [ ] Estadísticas.
+
+- [ ] Usar MariaDB con SQL.
 </ul>
 
 <br/>
