@@ -41,13 +41,20 @@
 <br/>
 <h3><u>Tecnologías usadas</u></h3>
 <hr/>
+  <ul>
+    <li>HTML: Es la base de la aplicación Web.</li>
+    <li>CSS: Decora la web y la hace diseño responsive (se ajusta al tamaño de la pantalla).</li>
+    <li>JavaScript: Contiene la lógica.</li>
+    <li>PHP: Permite crear una cuenta y guardar información (guardar partida, estadísticas...)</li>
+    <li>MariaDB/MySQL (una de las dos).</li>
+  </ul>
 <br/>
 <h3><u>Tareas</u></h3>
 <hr/>
 
 - [ ] Hacer HTML de:
-  - [ ] Página principal.
-  - [ ] Juego de Sudoku.
+  - [x] Página principal.
+  - [x] Juego de Sudoku.
   - [ ] Estadísticas.
   - [ ] Registro.
   - [ ] Inicio de sesión.
@@ -60,7 +67,8 @@
   - [ ] Juego de Sudoku.
   - [ ] Estadísticas.
 
-- [ ] Usar MariaDB con SQL.
+- [ ] Usar JavaScript.
+- [ ] Usar MariaDB o MySQL.
 </ul>
 
 <br/>
