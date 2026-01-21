@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Web</title>
+</head>
+<body>
+    <!-- Cabecera -->
+    <header>
+        <div class="header-container">
+            <h1 class="title">Sudoku Web</h1>
+            <nav>
+                <!-- Navegación principal -->
+                <ul class="nav-list">
+                    <li><a href="#">Volver a inicio</a></li>
+                    <li><a href="#">Jugar</a></li>
+                    <li><a href="#">Iniciar sesión</a></li>
+                    <li><a href="#">Registrarse</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Principal -->
+    <main>
+        <section class="stats-header">
+            <div>
+                <h2>Mis estadísticas</h2>
+                <p class="main-phrase">Aquí verás tu progreso, tus tiempos, y tu historial de partidas.</p>
+            </div>
+
+            <!-- Usuario -->
+            <p class="user-badge">Usuario: <strong>Invitado</strong></p>
+        </section>
+
+        <!-- Resumen -->
+        <section class="stats-card">
+            <article class="card">
+                <h3>Partidas jugadas</h3>
+                <p class="stat-number">0</p>
+                <p class="article-phrase">Total de partidas iniciadas</p>
+            </article>
+            <article class="card">
+                <h3>Partidas completadas</h3>
+                <p class="stat-number">0</p>
+                <p class="article-phrase">Partidas resueltas correctamente</p>
+            </article>
+            <article class="card">
+                <h3>Mejor tiempo</h3>
+                <p class="stat-number">--:--</p>
+                <p class="article-phrase">Tu récord personal</p>
+            </article>
+            <article class="card">
+                <h3>Dificultad favorita</h3>
+                <p class="stat-number">-</p>
+                <p class="article-phrase">La que más juegas</p>
+            </article>
+        </section>
+
+        <!-- Historial -->
+        <section class="history">
+            <header class="section-title">
+                <h3>Historial de partidas</h3>
+                <p class="history-phrase">Inicia sesión para ver tu historial</p>
+            </header>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Dificultad</th>
+                            <th>Tiempo</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><span class="badge badge-muted">Sin datos</span></td>
+                            <td>
+                                <button class="btn btn-small" type="button" disabled>Ver</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Acciones -->
+        <section class="stats-actions">
+            <button class="btn" type="button" id="btn-reset-stats" disabled>
+                Reiniciar estadísticas
+            </button>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+    </footer>
+</body>
+</html>
