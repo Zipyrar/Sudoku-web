@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Web</title>
+</head>
+<body>
+    <!-- Cabecera -->
+    <header>
+        <div class="header-container">
+            <h1 class="title">Sudoku Web</h1>
+            <nav>
+                <!-- Navegación principal -->
+                <ul class="nav-list">
+                    <li><a href="#">Volver a inicio</a></li>
+                    <li><a href="#">Jugar</a></li>
+                    <li><a href="#">Estadísticas</a></li>
+                    <li><a href="#">Iniciar sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Principal -->
+    <main>
+        <section class="form-section">
+            <h2>Crear cuenta</h2>
+            <p class="main-phrase">Regístrate para guarda tus partidas y consultar tus estadísticas.</p>
+            <!-- Formulario -->
+            <form action="#" method="post">
+                <div class="form-group">
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Tu nombre de usuario" required minlength="3" maxlength="20">
+                    <small class="form-hint">Entre 3 y 20 caracteres</small>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo electrónico/label>
+                    <input type="email" id="email" name="email" placeholder="ejemplo@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="******" required minlength="6">
+                    <small class="form-hint">Mínimo de 6 caracteres</small>
+                </div>
+                <div class="form-group">
+                    <label for="password_confirm">Repetir contraseña</label>
+                    <input type="password" id="password_confirm" name="password_confirm" placeholder="******" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+            </form>
+
+            <p class="form-footer">
+                ¿Ya tienes cuenta?
+                <a href="#">Inicia sesión aquí</a>
+            </p>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+    </footer>
+</body>
+</html>
