@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/sudoku.css">
     <title>Sudoku Web</title>
 </head>
 <body>
@@ -36,7 +37,7 @@
         
             <!-- Selector de dificultad -->
             <form class="difficulty-form" action="#" method="get">
-                <label for="difficulty" class="one-difficulty">Dificultad</label>
+                <label for="difficulty" class="one-difficulty"></label>
                     <select id="difficulty" name="difficulty">
                         <option value="easy">Fácil</option>
                         <option value="medium">Media</option>
@@ -53,126 +54,125 @@
         <section class="game-layout">
             <!-- Tablero -->
             <section class="board-section">
-            <div class="board" role="grid">
+                <div class="board" role="grid">
 
-            <!-- Fila 1 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="8">
-            </div>
+                    <!-- Fila 1 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="0" data-col="8">
+                    </div>
 
-            <!-- Fila 2 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="8">
-            </div>
+                    <!-- Fila 2 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="1" data-col="8">
+                    </div>
 
-            <!-- Fila 3 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="8">
-            </div>
+                    <!-- Fila 3 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="2" data-col="8">
+                    </div>
 
-            <!-- Fila 4 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="8">
-            </div>
+                    <!-- Fila 4 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="3" data-col="8">
+                    </div>
 
-            <!-- Fila 5 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="8">
-            </div>
+                    <!-- Fila 5 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="4" data-col="8">
+                    </div>
 
-            <!-- Fila 6 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="8">
-            </div>
+                    <!-- Fila 6 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="5" data-col="8">
+                    </div>
 
-            <!-- Fila 7 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="8">
-            </div>
+                    <!-- Fila 7 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="6" data-col="8">
+                    </div>
 
-            <!-- Fila 8 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="8">
-            </div>
+                    <!-- Fila 8 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="7" data-col="8">
+                    </div>
 
-            <!-- Fila 9 -->
-            <div class="board-row" role="row">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="0">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="1">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="2">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="3">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="4">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="5">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="6">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="7">
-            <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="8">
-            </div>
-
-            </div>
+                    <!-- Fila 9 -->
+                    <div class="board-row" role="row">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="0">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="1">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="2">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="3">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="4">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="5">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="6">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="7">
+                        <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="8">
+                    </div>
+                </div>
 
             <!-- Mensajes -->
             <p class="status" id="status"></p>

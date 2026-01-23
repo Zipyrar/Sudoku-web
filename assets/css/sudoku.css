@@ -1,0 +1,215 @@
+.game-header,
+.board-section,
+.panel-card {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  margin-top: 18px;
+  padding: 18px;
+}
+
+.game-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.difficulty-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap
+}
+/* Selector de dificultad */
+.difficulty-form select {
+    appearance: none; /* Quita el estilo anterior */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding: 10px 44px 10px 14px;
+    min-height: 42px;
+
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 10px;
+
+    background-color: rgba(255,255,255,0.10);
+    color: inherit;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    outline: none;
+
+    transition: background 0.15s ease, border-color 0.15s ease;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='white' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px 8px;
+}
+/* Hover */
+.difficulty-form select:hover {
+  background-color: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.45);
+}
+/* Foco */
+.difficulty-form select:focus {
+  background-color: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.6);
+}
+/* Opciones */
+.difficulty-form option {
+    background: #0b1d3a;
+    color: white;
+}
+
+/* Contador */
+.timer {
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    letter-spacing: 0.5px;
+    font-weight: 800;
+}
+
+/* Diseño de juego */
+.game-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    align-items: start;
+    gap: 16px;
+}
+
+/* Tablero */
+.board {
+    display: grid;
+    grid-template-rows: repeat(9, 1fr);
+    justify-content: center;
+}
+.board-section {
+    justify-content: center;
+}
+.board-row { /* Cada fila es un grid de 9 columnas */
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+}
+
+/* Celdas */
+.cell {
+    width: 44px;
+    height: 44px;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: white;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.25);
+    outline: none;
+    margin: 0;
+    padding: 0;
+    caret-color: transparent;
+    user-select: none;
+    transition: background 0.12s ease, border-color 0.12s ease;
+}
+.cell:focus {
+    background: rgba(59,130,246,0.35);
+    border-color: rgba(59,130,246,0.8);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
+}
+
+/* Celdas con fondo alterno. */
+.board-row:nth-child(odd) .cell:nth-child(even),
+.board-row:nth-child(even) .cell:nth-child(odd) {
+    background: rgba(34, 65, 245, 0.09);
+}
+/* Bordes gruesos 3x3 */
+.board-row:nth-child(3n) .cell {
+  border-bottom-width: 3px;
+}
+.board-row .cell:nth-child(3n) {
+  border-right-width: 3px;
+}
+/* Bordes exteriores */
+.board-row:first-child .cell {
+  border-top-width: 3px;
+}
+.board-row .cell:first-child {
+  border-left-width: 3px;
+}
+/* Colorear ligeramente los bordes gruesos */
+.board-row:nth-child(3n) .cell,
+.board-row .cell:nth-child(3n),
+.board-row:first-child .cell,
+.board-row .cell:first-child {
+  border-color: rgba(255,255,255,0.45);
+}
+
+/* Estados */
+.status {
+    margin: 12px 0 0;
+    min-height: 20px;
+    opacity: 0.9;
+}
+
+.cell.fixed {
+  background: rgba(255,255,255,0.18);
+  font-weight: 900;
+}
+.cell.error {
+  background: rgba(220,38,38,0.35);
+}
+.cell.correct {
+  background: rgba(34,197,94,0.25);
+}
+.cell.selected {
+  background: rgba(59,130,246,0.35);
+}
+
+/* Paneles de al lado */
+.side-panel {
+    display: grid;
+    gap: 12px;
+}
+
+.panel-card {
+    padding: 14px;
+}
+.panel-card h3 {
+    margin: 0 0 10px;
+}
+
+.panel-actions {
+    display: grid;
+    grid-template-rows: 1fr;
+    gap: 10px;
+}
+
+.help-list {
+    margin: 0;
+    padding-left: 15px;
+    opacity: 0.9;
+}
+
+/* Diseño responsive */
+@media (max-width: 980px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cell {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 520px) {
+  .cell {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+}

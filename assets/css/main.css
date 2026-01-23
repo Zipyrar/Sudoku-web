@@ -10,6 +10,7 @@ body {
     margin: 0;
     background: #0b1d3a; /* Azul oscuro */
     color: white;
+    font-family: system-ui, Arial, sans-serif;
     line-height: 1.5;
     overflow-x: hidden;
     min-height: 100vh;
@@ -64,6 +65,7 @@ header {
     border: 1px solid transparent;
     background: transparent;
     border-radius: 10px;
+    transition: background 0.15s ease, border-color 0.15s ease;
 }
 .nav-list a:hover {
   background: rgba(255,255,255,0.08);
@@ -88,7 +90,7 @@ a {
     color: #fff;
     cursor: pointer;
     font-weight: 600;
-    transition: transform 0.1s ease, border 0.15s ease;
+    transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .btn:hover {
