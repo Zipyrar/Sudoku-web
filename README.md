@@ -52,16 +52,20 @@
 <h3><u>Tareas</u></h3>
 <hr/>
 
-- [ ] Hacer HTML de:
+- [x] Hacer HTML de:
   - [x] Página principal.
   - [x] Juego de Sudoku.
-  - [ ] Estadísticas.
-  - [ ] Registro.
-  - [ ] Inicio de sesión.
+  - [x] Estadísticas.
+  - [x] Registro.
+  - [x] Inicio de sesión.
 
 - [ ] Crear los CSS para los HTML:
-  - [ ] General (para todos los html).
-  - [ ] 
+  - [x] General (para todos los html).
+  - [ ] Principal.
+  - [ ] Sudoku.
+  - [ ] Estadísticas.
+  - [ ] Inicio y registro.
+
 - [ ] Hacer PHP para:
   - [ ] Registro.
   - [ ] Inicio de sesión.
