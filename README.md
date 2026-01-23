@@ -30,6 +30,7 @@
 </ul>
 <br/>
 <h3>📁<u>Descargar, descomprimir y ejecutar el proyecto</u>📂</h3>
+<hr/>
 <p>Ve al Github principal, pincha en '<> Code' y le das a <b>'Download ZIP'</b>.</p>
 <p>Descomprime el archivo haciendo clic derecho, y pulsando en la opción 'Extraer todo' o 'Extraer aquí'.</p>
 <p><b>Advertencia: no mover ningún archivo de lugar o cambiarle el nombre, podría provocar errores.</b></p>
