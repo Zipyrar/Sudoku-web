@@ -59,7 +59,9 @@
   - [ ] Registro.
   - [ ] Inicio de sesión.
 
-- [ ] Crear los CSS para los HTML (concretar a detalle más adelante).
+- [ ] Crear los CSS para los HTML:
+  - [ ] General (para todos los html).
+  - [ ] 
 - [ ] Hacer PHP para:
   - [ ] Registro.
   - [ ] Inicio de sesión.
