@@ -61,8 +61,8 @@
 
 - [ ] Crear los CSS para los HTML:
   - [x] General (para todos los html).
-  - [ ] Principal.
-  - [ ] Sudoku.
+  - [x] Principal.
+  - [x] Sudoku.
   - [ ] Estadísticas.
   - [ ] Inicio y registro.
 
