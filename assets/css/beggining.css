@@ -1,0 +1,43 @@
+.presentation, .feature {
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+}
+
+.presentation {
+    margin-top: 18px;
+    padding: 18px;
+}
+.presentation h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.presentation p {
+    margin-top: 0;
+    margin-bottom: 16px;
+    max-width: 70ch;
+}
+
+.features {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+.feature {
+    padding: 14px;
+}
+.feature h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+.feature p {
+    margin: 0;
+    opacity: 0.88;
+}
+
+@media (max-width: 820px) {
+    .features {
+        grid-template-columns: 1fr;
+    }
+}

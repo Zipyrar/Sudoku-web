@@ -7,13 +7,21 @@ html, body {
 }
 
 body {
+    margin: 0;
     background: #0b1d3a; /* Azul oscuro */
     color: white;
+    line-height: 1.5;
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
-    flex: 1;
+    flex: 1; /* Empujar el pie de página abajo */
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    padding: 24px 0 40px;
 }
 
 /* Cabecera */
@@ -36,7 +44,7 @@ header {
 
 .title {
     margin: 0;
-    font-size: 40px;
+    font-size: 32px;
     letter-spacing: 0.2px;
 }
 
@@ -67,9 +75,73 @@ a {
     text-decoration: none;
 }
 
+/* Botones */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.1s ease, border 0.15s ease;
+}
+
+.btn:hover {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.28);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #1e3a8a;
+    border-color: rgba(255,255,255,0.18);
+}
+.btn-primary:hover {
+    background: #2546a3;
+}
+
+.btn-danger {
+    background: #b91c1c;
+    border-color: rgba(255,255,255,0.18);
+}
+.btn-danger:hover {
+    background: #cf2323;
+}
+
+.btn-small {
+    padding: 7px 10px;
+    border-radius: 9px;
+    font-size: 0.92rem;
+}
+
 /* Pie de página */
 footer{
+    margin-top: 10px;
     padding: 12px 0;
     text-align: center;
     border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Diseño responsive */
+@media (max-width: 820px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    main {
+        padding: 18px 0 32px;
+    }
 }
