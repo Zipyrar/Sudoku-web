@@ -1,70 +1,70 @@
 .stats-header,
 .history,
 .stats-card {
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  margin-top: 18px;
-  padding: 18px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+    margin-top: 18px;
+    padding: 18px;
 }
 
 /* Cabecera */
 .stats-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .stats-header h2 {
-  margin: 0 0 6px;
+    margin: 0 0 6px;
 }
 
 .main-phrase {
-  margin: 0;
-  opacity: 0.9;
-  max-width: 75ch;
+    margin: 0;
+    opacity: 0.9;
+    max-width: 75ch;
 }
 
 .user-badge {
-  margin: 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  font-weight: 700;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    font-weight: 700;
 }
 
 /* Estadísticas */
 .stats-card {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
 }
 
 .card {
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  padding: 16px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+    padding: 16px;
 }
 
 .card h3 {
-  margin: 0 0 10px;
-  font-size: 1.05rem;
+    margin: 0 0 10px;
+    font-size: 1.05rem;
 }
 
 .stat-number {
-  margin: 0;
-  font-size: 1.9rem;
-  font-weight: 900;
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 900;
 }
 
 .article-phrase {
-  margin: 8px 0 0;
-  opacity: 0.88;
-  font-size: 0.95rem;
+    margin: 8px 0 0;
+    opacity: 0.88;
+    font-size: 0.95rem;
 }
 
 /* Historial */
@@ -74,78 +74,78 @@
 }
 
 .section-title h3 {
-  margin: 0 0 6px;
+    margin: 0 0 6px;
 }
 
 .history-phrase {
-  margin: 0;
-  opacity: 0.88;
-  font-size: 0.95rem;
+    margin: 0;
+    opacity: 0.88;
+    font-size: 0.95rem;
 }
 
 .table-wrapper {
-  margin-top: 14px;
-  overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.12);
+    margin-top: 14px;
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
 }
 
 
 .table-wrapper table {
-  width: 100%;
-  min-width: 680px;
-  border-collapse: collapse;
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
 }
 
 .table-wrapper th,
 .table-wrapper td {
-  padding: 12px 10px;
-  text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.10);
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 
 .table-wrapper thead th {
-  background: rgba(255,255,255,0.06);
-  font-weight: 700;
+    background: rgba(255,255,255,0.06);
+    font-weight: 700;
 }
 
 
 .badge {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  border: 1px solid rgba(255,255,255,0.12);
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.12);
 }
 
 .badge-muted {
-  background: rgba(255,255,255,0.06);
-  opacity: 0.9;
+    background: rgba(255,255,255,0.06);
+    opacity: 0.9;
 }
 
 
 .stats-actions {
-  margin-top: 18px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 /* Responsive */
 @media (max-width: 980px) {
-  .stats-card {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .stats-card {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 520px) {
-  .stats-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .stats-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-  .stats-card {
-    grid-template-columns: 1fr;
-  }
+    .stats-card {
+        grid-template-columns: 1fr;
+    }
 }

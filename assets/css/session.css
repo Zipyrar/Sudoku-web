@@ -1,0 +1,78 @@
+/* Formulario de sesión */
+.form-section {
+    margin-top: 24px;
+    padding: 20px;
+
+    width: min(520px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+}
+
+.form-section h2 {
+    margin: 0 0 8px;
+}
+
+.form-section p {
+    margin: 0 0 16px;
+    opacity: 0.9;
+}
+
+.form {
+    display: grid;
+    gap: 14px;
+}
+
+.form-group {
+    display: grid;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.form-group input {
+    padding: 11px 12px;
+
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.08);
+    color: inherit;
+
+    outline: none;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.form-group input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.form-group input:focus {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(59,130,246,0.8);
+}
+
+.btn-primary {
+    margin: 20px 0 15px 0;
+}
+
+/* Ayuda */
+.form-hint {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Pie de página */
+.form-footer {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.form-footer a {
+    text-decoration: underline;
+}
