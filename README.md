@@ -60,12 +60,12 @@
   - [x] Registro.
   - [x] Inicio de sesión.
 
-- [ ] Crear los CSS para los HTML:
+- [x] Crear los CSS para los HTML:
   - [x] General (para todos los html).
   - [x] Principal.
   - [x] Sudoku.
-  - [ ] Estadísticas.
-  - [ ] Inicio y registro.
+  - [x] Estadísticas.
+  - [x] Inicio y registro.
 
 - [ ] Hacer PHP para:
   - [ ] Registro.
