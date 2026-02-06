@@ -48,6 +48,9 @@
                     Nueva partida
                 </button>
                 <label class="timer" id="timer">00:00</label>
+                <button type="button" class="btn btn-danger" id="btn-abandon">
+                    Abandonar
+                </button>
             </form>
         </section>
 
@@ -173,6 +176,11 @@
                         <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="8">
                     </div>
                 </div>
+            
+            <!-- Mostrar Sudoku pausado -->
+            <div class="board-pause" id="board-pause" aria-hidden="true">
+                <div class="board-pause-box">PAUSADO</div>
+            </div>
 
             <!-- Mensajes -->
             <p class="status" id="status"></p>
@@ -184,6 +192,7 @@
                     <h3>Opciones</h3>
                     <div class="panel-actions">
                         <button type="button" class="btn" id="btn-notes">Notas: OFF</button>
+                        <button type="button" class="btn" id="btn-pause">Pausar</button>
                         <button type="button" class="btn" id="btn-reset">Reiniciar</button>
                         <button type="button" class="btn" id="btn-hint">Pista</button>
                     </div>
@@ -204,6 +213,7 @@
                         <li>No repitas números en una misma columna.</li>
                         <li>No repitas números en un bloque 3x3.</li>
                         <li>Fíjate en los números por las cuatro direcciones del hueco.</li>
+                        <li>Apunta en un hueco los posibles números correctos con las notas.</li>
                     </ul>
                 </div>
             </aside>

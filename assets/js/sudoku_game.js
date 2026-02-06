@@ -4,11 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btnNew = document.getElementById("btn-new-game");
     const btnReset = document.getElementById("btn-reset");
+    const btnPause = document.getElementById("btn-pause");
     const btnNotes = document.getElementById("btn-notes");
     const btnHint = document.getElementById("btn-hint");
+    const btnAbandon = document.getElementById("btn-abandon")
 
     const difficultySel = document.getElementById("difficulty");
     const timerEl = document.getElementById("timer");
+    const boardPause = document.getElementById("board-pause");
 
     if (!cells.length) return;
 
@@ -21,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Notas.
     let notesMode = false;
+    // Pausa.
+    let paused = false;
 
     const notesByCell = new Map();
 
@@ -84,8 +89,61 @@ document.addEventListener("DOMContentLoaded", () => {
     buildNotesUI();
 
     if (btnNotes) {
-        btnNotes.addEventListener("click", () => setNotesMode(!notesMode));
+        btnNotes.addEventListener("click", () => { 
+            // Si no hay partida, no permitir notas.
+            if (!currentSolution) return;
+
+            // Si terminó, tampoco permitir.
+            if (gameOver || gameWon) return;
+
+            setNotesMode(!notesMode)
+        });
         setNotesMode(false);
+    }
+
+    function setBoardEnabled(enabled){
+        cells.forEach(cell => {
+            // Las fijas siempre deshabilitadas.
+            if (cell.classList.contains("fixed")) return;
+            // Si el juego terminó, tampoco habilitar.
+            if (gameOver || gameWon) return;
+
+            cell.disabled = !enabled;
+        });
+    }
+
+    function setPaused(on){
+        paused = !!on;
+
+        if (paused){
+            stopTimer();
+            setBoardEnabled(false);
+            if (btnPause) btnPause.textContent = "Reanudar";
+            if (boardPause){
+            boardPause.classList.add("show");
+            boardPause.setAttribute("aria-hidden", "false");
+            }
+        } else {
+            startTimer();
+            setBoardEnabled(true);
+            if (btnPause) btnPause.textContent = "Pausar";
+            if (boardPause){
+            boardPause.classList.remove("show");
+            boardPause.setAttribute("aria-hidden", "true");
+            }
+        }
+    }
+
+    if (btnPause){
+        btnPause.addEventListener("click", () => {
+            // Si no hay partida, no pausar.
+            if (!currentSolution) return;
+
+            // Si terminó, no pausar.
+            if (gameOver || gameWon) return;
+
+            setPaused(!paused);
+        });
     }
 
     // Estado de juego.
@@ -532,6 +590,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Notas: limpiar y OFF
             clearAllNotes();
             setNotesMode(false);
+            // Evitar que esté pausado.
+            setPaused(false);
 
             loadPuzzleToUI(gen.puzzle);
 
@@ -548,4 +608,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
     resetTimer();
     setStatus("");
+
+    function endGameAbandoned() {
+        if (gameOver || gameWon) return;
+
+        gameOver = true;
+        paused = false;
+
+        stopTimer();
+
+        // Bloquear todas las celdas.
+        cells.forEach(cell => {
+            cell.disabled = true;
+        });
+
+        // Ocultar overlay de pausa si estaba activo.
+        if (boardOverlay) {
+            boardOverlay.classList.remove("show");
+            boardOverlay.setAttribute("aria-hidden", "true");
+        }
+
+        // Mensaje claro.
+        setStatus("Partida abandonada.", "error");
+
+        // Desactivar botones.
+        disableGameButtonsAfterEnd();
+    }
+
+    function disableGameButtonsAfterEnd() {
+        const ids = [
+            "btn-pause",
+            "btn-notes",
+            "btn-hint",
+            "btn-save",
+            "btn-load"
+        ];
+
+        ids.forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) btn.disabled = true;
+        });
+    }
+
+    if (btnAbandon) {
+        btnAbandon.addEventListener("click", () => {
+            if (!currentSolution) return;
+
+            const ok = confirm("¿Seguro que quieres abandonar la partida?");
+            if (!ok) return;
+
+            endGameAbandoned();
+        });
+    }
 });

@@ -285,6 +285,47 @@
   opacity: 0.9;
 }
 
+/* Pausa */
+.board-section{
+  position: relative;
+}
+
+/* Capa encima del tablero */
+.board-pause{
+  position: absolute;
+
+  /* Cuvrir solo el tablero */
+  top: 18px;                 
+  left: 18px;
+  right: 18px;
+
+  /* Altura exacta del tablero: 9 celdas */
+  height: calc(44px * 9);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(11, 29, 58, 0.45); /* Sin blur */
+  border-radius: 12px;
+  z-index: 20;
+}
+
+/* Visible */
+.board-pause.show{
+  display: flex;
+}
+
+/* Cartel */
+.board-pause-box{
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.10);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
 /* Responsive */
 @media (max-width: 980px) {
   .game-layout {
@@ -297,6 +338,7 @@
   }
 
   .cell-wrap{ width: 40px; height: 40px; }
+  .board-pause{ height: calc(40px * 9); }
   .note{ font-size: 9px; }
 }
 
@@ -308,5 +350,6 @@
   }
 
   .cell-wrap{ width: 34px; height: 34px; }
+  .board-pause{ height: calc(34px * 9); }
   .note{ font-size: 8px; }
 }

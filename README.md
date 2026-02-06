@@ -75,8 +75,8 @@
   - [ ] Estadísticas.
 
 - [ ] Usar JavaScript:
-  - [ ] Inicio y registro.
-  - [ ] Generar Sudokus.
+  - [x] Inicio y registro.
+  - [x] Generar Sudokus.
   - [ ] Estadísticas.
 
 - [ ] Usar MariaDB o MySQL.
