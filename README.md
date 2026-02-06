@@ -74,7 +74,11 @@
   - [ ] Juego de Sudoku.
   - [ ] Estadísticas.
 
-- [ ] Usar JavaScript.
+- [ ] Usar JavaScript:
+  - [ ] Inicio y registro.
+  - [ ] Generar Sudokus.
+  - [ ] Estadísticas.
+
 - [ ] Usar MariaDB o MySQL.
 </ul>
 
