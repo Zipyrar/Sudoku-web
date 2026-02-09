@@ -23,77 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
         hard: { holes: 56, maxMistakes: 3, maxHints: 1 },
     };
 
-    // Sobreescribir sin perder foco.
-    document.addEventListener("keydown", (e) => {
-        const active = document.activeElement;
-        if (!active || !active.classList || !active.classList.contains("cell")) return;
-
-        if (!currentSolution) return;
-        if (paused) return;
-        if (gameOver || gameWon) return;
-
-        const cell = active;
-
-        // No tocar fijas.
-        if (cell.classList.contains("fixed") || cell.disabled) return;
-
-        // Solo números del 1 al 9.
-        const k = e.key;
-
-        if (k === "Backspace" || k === "Delete") {
-            e.preventDefault();
-
-            const idx = getIndex(cell);
-            if (idx == null || idx < 0) return;
-
-            cell.value = "";
-            cell.classList.remove("error", "correct");
-
-            if (typeof refreshStatus === "function") refreshStatus();
-            return;
-        }
-
-        // Si no es del 1 al 9, no contar.
-        if (!/^[1-9]$/.test(k)) return;
-
-        e.preventDefault();
-
-        const n = Number(k);
-        const idx = getIndex(cell);
-        if (idx == null || idx < 0) return;
-
-        // Modo notas: toggle nota
-        if (typeof notesMode !== "undefined" && notesMode) {
-            const set = notesByCell.get(idx) ?? new Set();
-            if (set.has(n)) set.delete(n);
-            else set.add(n);
-            notesByCell.set(idx, set);
-            renderNotes(idx);
-            return; // El foco queda tal cual.
-        }
-
-        // Sobreescribir siempre que se pueda.
-        cell.value = String(n);
-
-        // Limpiar estados anteriores.
-        cell.classList.remove("error", "correct");
-
-        // Limpiar notas al poner número grande.
-        if (typeof clearNotes === "function") clearNotes(idx);
-
-        // Revalidar.
-        updateCellStateAndPenalty(cell);
-
-        if (typeof refreshStatus === "function") refreshStatus();
-
-        if (typeof isSolved === "function" && typeof winGame === "function") {
-            if (isSolved()) winGame();
-        }
-
-        try { cell.setSelectionRange(1, 1); } catch {}
-    });
-
-
     // Notas.
     let notesMode = false;
     // Pausa.
@@ -154,7 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setNotesMode(on) {
         notesMode = !!on;
-        if (btnNotes) btnNotes.textContent = `📝 ${notesMode ? "ON" : "OFF"}`;
+        if (btnNotes) {
+            btnNotes.textContent = `📝 ${notesMode ? "ON" : "OFF"}`;
+            btnNotes.classList.toggle("on", notesMode);
+        }
     }
 
     // Construir interfaz de notas al cargar.
@@ -636,14 +568,14 @@ document.addEventListener("DOMContentLoaded", () => {
         cell.addEventListener("focus", () => selectCell(cell));
 
         cell.addEventListener("keydown", (e) => {
-            if (gameOver || gameWon) return;
+            if (!currentSolution || paused || gameOver || gameWon) return;
             if (cell.classList.contains("fixed")) return;
             if (cell.disabled) return;
             if (e.ctrlKey || e.metaKey) return;
 
             const idx = getIndex(cell);
 
-            // Navegación.
+            // Navegación con flechas.
             const nav = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
             if (nav.includes(e.key)) {
                 e.preventDefault();
@@ -655,12 +587,49 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // En modo notas no escribe número grande.
-            if (notesMode && /^[1-9]$/.test(e.key)) {
+            // Borrar.
+            if (e.key === "Backspace" || e.key === "Delete") {
                 e.preventDefault();
-                if (idx === -1) return;
+                cell.value = "";
+                cell.classList.remove("error", "correct");
+                if (idx !== -1) penalizedCells.delete(idx);
+                refreshStatus();
+                return;
+            }
 
+            // Números 1..9 (modo normal o modo notas).
+            if (/^[1-9]$/.test(e.key)) {
+                e.preventDefault();
                 const n = Number(e.key);
+                writeNumber(cell, n);
+
+                // Avanzar solo en modo normal.
+                if (!notesMode && idx !== -1) focusByIndex(idx + 1);
+                return;
+            }
+
+            // Permitir tab para navegar.
+            if (e.key === "Tab") return;
+
+            // Bloquear todo lo demás (evita que se escriban letras, 0, etc.).
+            e.preventDefault();
+        });
+
+        cell.addEventListener("input", () => {
+            if (!currentSolution) return;
+            if (paused) return;
+            if (gameOver || gameWon) return;
+            if (cell.classList.contains("fixed")) return;
+            if (cell.disabled) return;
+
+            const clean = sanitizeToSingleDigit(cell.value);
+            if (cell.value !== clean) cell.value = clean;
+
+            // Si está el modo notas, no permitir número grande.
+            const idx = getIndex(cell);
+            if (idx !== -1 && notesMode && clean) {
+                cell.value = "";
+                const n = Number(clean);
                 const set = notesByCell.get(idx) ?? new Set();
                 if (set.has(n)) set.delete(n);
                 else set.add(n);
@@ -669,25 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Permitir borrar.
-            const allowed = ["Backspace", "Delete", "Tab"];
-            if (allowed.includes(e.key)) return;
-
-            // Solo 1-9 en modo normal.
-            if (!/^[1-9]$/.test(e.key)) e.preventDefault();
-        });
-
-        cell.addEventListener("input", () => {
-            if (!currentSolution) return;
-            if (gameOver || gameWon) return;
-            if (cell.classList.contains("fixed")) return;
-            if (cell.disabled) return;
-
-            const clean = sanitizeToSingleDigit(cell.value);
-            if (cell.value !== clean) cell.value = clean;
-
             // Si puso número normal, borrar notas de esta celda.
-            const idx = getIndex(cell);
             if (idx !== -1 && clean) clearNotes(idx);
 
             updateCellStateAndPenalty(cell);
@@ -763,9 +714,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // Ocultar overlay de pausa si estaba activo.
-        if (boardOverlay) {
-            boardOverlay.classList.remove("show");
-            boardOverlay.setAttribute("aria-hidden", "true");
+        if (boardPause) {
+            boardPause.classList.remove("show");
+            boardPause.setAttribute("aria-hidden", "true");
         }
 
         // Mensaje claro.
