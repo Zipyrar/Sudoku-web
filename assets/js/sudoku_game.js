@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const cells = Array.from(document.querySelectorAll(".cell"));
     const statusEl = document.getElementById("status");
+    const padButtons = document.querySelectorAll(".pad-btn");
 
     const btnNew = document.getElementById("btn-new-game");
     const btnReset = document.getElementById("btn-reset");
@@ -21,6 +22,77 @@ document.addEventListener("DOMContentLoaded", () => {
         medium: { holes: 48, maxMistakes: 5, maxHints: 3 },
         hard: { holes: 56, maxMistakes: 3, maxHints: 1 },
     };
+
+    // Sobreescribir sin perder foco.
+    document.addEventListener("keydown", (e) => {
+        const active = document.activeElement;
+        if (!active || !active.classList || !active.classList.contains("cell")) return;
+
+        if (!currentSolution) return;
+        if (paused) return;
+        if (gameOver || gameWon) return;
+
+        const cell = active;
+
+        // No tocar fijas.
+        if (cell.classList.contains("fixed") || cell.disabled) return;
+
+        // Solo números del 1 al 9.
+        const k = e.key;
+
+        if (k === "Backspace" || k === "Delete") {
+            e.preventDefault();
+
+            const idx = getIndex(cell);
+            if (idx == null || idx < 0) return;
+
+            cell.value = "";
+            cell.classList.remove("error", "correct");
+
+            if (typeof refreshStatus === "function") refreshStatus();
+            return;
+        }
+
+        // Si no es del 1 al 9, no contar.
+        if (!/^[1-9]$/.test(k)) return;
+
+        e.preventDefault();
+
+        const n = Number(k);
+        const idx = getIndex(cell);
+        if (idx == null || idx < 0) return;
+
+        // Modo notas: toggle nota
+        if (typeof notesMode !== "undefined" && notesMode) {
+            const set = notesByCell.get(idx) ?? new Set();
+            if (set.has(n)) set.delete(n);
+            else set.add(n);
+            notesByCell.set(idx, set);
+            renderNotes(idx);
+            return; // El foco queda tal cual.
+        }
+
+        // Sobreescribir siempre que se pueda.
+        cell.value = String(n);
+
+        // Limpiar estados anteriores.
+        cell.classList.remove("error", "correct");
+
+        // Limpiar notas al poner número grande.
+        if (typeof clearNotes === "function") clearNotes(idx);
+
+        // Revalidar.
+        updateCellStateAndPenalty(cell);
+
+        if (typeof refreshStatus === "function") refreshStatus();
+
+        if (typeof isSolved === "function" && typeof winGame === "function") {
+            if (isSolved()) winGame();
+        }
+
+        try { cell.setSelectionRange(1, 1); } catch {}
+    });
+
 
     // Notas.
     let notesMode = false;
@@ -82,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setNotesMode(on) {
         notesMode = !!on;
-        if (btnNotes) btnNotes.textContent = `Notas: ${notesMode ? "ON" : "OFF"}`;
+        if (btnNotes) btnNotes.textContent = `📝 ${notesMode ? "ON" : "OFF"}`;
     }
 
     // Construir interfaz de notas al cargar.
@@ -100,6 +172,75 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         setNotesMode(false);
     }
+
+    function getActiveCell() {
+        // Priorizar la seleccionada.
+        const selected = document.querySelector(".cell.selected");
+        if (selected) return selected;
+
+        // Si hay foco en una celda.
+        const active = document.activeElement;
+        if (active && active.classList && active.classList.contains("cell")) return active;
+
+        return null;
+    }
+
+    function writeNumber(cell, n) {
+        if (!cell) return;
+        if (!currentSolution) return;
+        if (paused) return;
+        if (gameOver || gameWon) return;
+
+        // Nunca tocar celdas fijas.
+        if (cell.classList.contains("fixed") || cell.disabled) return;
+
+        const idx = getIndex(cell);
+        if (idx == null || idx < 0) return;
+
+        // Modo notas.
+        if (typeof notesMode !== "undefined" && notesMode) {
+            const set = notesByCell.get(idx) ?? new Set();
+            if (set.has(n)) set.delete(n);
+            else set.add(n);
+            notesByCell.set(idx, set);
+            renderNotes(idx);
+            return;
+        }
+
+        // Sobrescribir siempre, incluso con error.
+        cell.value = String(n);
+
+        // Limpiar estados anteriores.
+        cell.classList.remove("error", "correct");
+
+        // Limpiar notas.
+        if (typeof clearNotes === "function") clearNotes(idx);
+
+        // Recalcular acierto/error.
+        updateCellStateAndPenalty(cell);
+
+        if (typeof refreshStatus === "function") refreshStatus();
+
+        if (typeof isSolved === "function" && typeof winGame === "function") {
+            if (isSolved()) winGame();
+        }
+    }
+
+
+    padButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const cell = getActiveCell();
+            if (!cell) return;
+
+            const n = Number(btn.dataset.n);
+            if (!Number.isInteger(n) || n < 1 || n > 9) return;
+
+            writeNumber(cell, n);
+
+            // Vuelve el foco a la celda.
+            cell.focus();
+        });
+    });
 
     function setBoardEnabled(enabled){
         cells.forEach(cell => {
@@ -183,8 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectCell(cells[idx]);
     };
 
-    const sanitizeToSingleDigit = (value) =>
-        String(value ?? "").replace(/[^1-9]/g, "").slice(0, 1);
+    const sanitizeToSingleDigit = (value) => String(value ?? "").replace(/[^1-9]/g, "").slice(0, 1);
 
 
     // Timer.

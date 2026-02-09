@@ -52,7 +52,6 @@
   background-size: 14px 10px;
 }
 
-/* Hover y focus */
 .difficulty-form select:hover{
   background-color: rgba(255,255,255,0.12);
   border-color: rgba(255,255,255,0.38);
@@ -63,14 +62,13 @@
   box-shadow: 0 0 0 3px rgba(59,130,246,0.28);
 }
 
-/* Opciones del desplegable */
 .difficulty-form select option{
   background: #0b1d3a;
   color: #fff;
   font-weight: 700;
 }
 
-/* Contador */
+/* Timer */
 .timer {
   padding: 10px 12px;
   border: 1px solid rgba(255,255,255,0.12);
@@ -80,184 +78,12 @@
   font-weight: 800;
 }
 
-/* Diseño*/
+/* Layout principal */
 .game-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
   align-items: start;
   gap: 16px;
-}
-
-/* Tablero */
-.board {
-  display: grid;
-  grid-template-rows: repeat(9, 1fr);
-  justify-content: center;
-}
-
-.board-row {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-}
-
-/* Celdas*/
-.cell {
-  width: 44px;
-  height: 44px;
-
-  text-align: center;
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #fff;
-
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.22);
-
-  outline: none;
-  padding: 0;
-  margin: 0;
-
-  caret-color: rgba(255,255,255,0.9);
-  user-select: none;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.25s ease;
-}
-
-.board-row:nth-child(odd) .cell:nth-child(even),
-.board-row:nth-child(even) .cell:nth-child(odd) {
-  background: rgba(34, 65, 245, 0.12); /* tono alterno */
-}
-
-/* Bordes marcados en cada bloque 3x3 */
-.board-row .cell-wrap:nth-child(3n) .cell {
-  border-right-width: 3px;
-  border-right-color: rgba(255,255,255,0.45);
-}
-
-/* Filas con borde fuerte solo cada 3 */
-.board-row:nth-child(3n) .cell {
-  border-bottom-width: 3px;
-  border-bottom-color: rgba(255,255,255,0.45);
-}
-
-/* Bordes exteriores */
-.board-row:first-child .cell {
-  border-top-width: 3px;
-  border-top-color: rgba(255,255,255,0.45);
-}
-.board-row .cell-wrap:first-child .cell {
-  border-left-width: 3px;
-  border-left-color: rgba(255,255,255,0.45);
-}
-
-/* Estados */
-.cell.correct,
-.cell.error,
-.cell.fixed,
-.cell.selected {
-  box-shadow: none;
-}
-
-/* Correcto: tintado verde + borde interior */
-.cell.correct {
-  box-shadow:
-    inset 0 0 0 999px rgba(34,197,94,0.35),
-    inset 0 0 0 2px rgba(34,197,94,0.85);
-}
-
-/* Error: tintado rojo + borde interior */
-.cell.error {
-  box-shadow:
-    inset 0 0 0 999px rgba(220,38,38,0.35),
-    inset 0 0 0 2px rgba(220,38,38,0.85);
-}
-
-/* Fijas: un pelín más claras */
-.cell.fixed {
-  box-shadow:
-    inset 0 0 0 999px rgba(255,255,255,0.01);
-  font-weight: 900;
-}
-
-/* Seleccionada: azul */
-.cell.selected:not(.error):not(.correct) {
-  box-shadow:
-    inset 0 0 0 999px rgba(59,130,246,0.25),
-    inset 0 0 0 2px rgba(59,130,246,0.75);
-}
-
-/* Si una celda es correcta y además fixed, poner verde igualmente */
-.cell.fixed.correct {
-    box-shadow:
-      inset 0 0 0 999px rgba(34,197,94,0.35),
-      inset 0 0 0 2px rgba(34,197,94,0.85) !important;
-}
-
-/* Si una celda es error y además fixed, poner roja igualmente */
-.cell.fixed.error {
-  box-shadow:
-    inset 0 0 0 999px rgba(220,38,38,0.35),
-    inset 0 0 0 2px rgba(220,38,38,0.85) !important;
-}
-
-/* Mensajes */
-.status {
-  margin: 12px 0 0;
-  min-height: 20px;
-  opacity: 0.9;
-}
-
-/* Contenedor de notas por celda */
-.cell-wrap{
-  position: relative;
-  width: 44px;
-  height: 44px;
-}
-
-.cell-wrap > .cell{
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-}
-
-/* Rejilla de notas (de 3x3) encima del input */
-.notes{
-  position: absolute;
-  inset: 2px;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  pointer-events: none; /* No intercepta los clicks */
-  opacity: 0.9;
-}
-
-.note{
-  opacity: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  line-height: 1;
-  color: rgba(255,255,255,0.65);
-  transform: translateY(-1px);
-}
-
-.note.on{
-  opacity: 1;
-  color: rgba(255,255,255,0.95);
-  font-weight: 800;
-}
-
-/* Cuando una celda está fijada, esconder notas */
-.cell.fixed + .notes,
-.cell.fixed ~ .notes{
-  display: none;
 }
 
 /* Panel lateral */
@@ -285,38 +111,294 @@
   opacity: 0.9;
 }
 
-/* Pausa */
-.board-section{
-  position: relative;
+/* Tablero y teclado (con notas) */
+:root{
+  --cell: 44px;
+  --pad: 54px;
 }
 
-/* Capa encima del tablero */
-.board-pause{
+.board-section{
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas:
+    "board keypad"
+    "status status";
+  gap: 14px;
+  justify-content: center;
+  align-items: start;
+}
+
+.board{ grid-area: board; }
+.keypad-card{ grid-area: keypad; margin-top: 0; align-self: start; }
+.status{ grid-area: status; }
+
+/* Tablero */
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+  justify-content: center;
+  width: max-content;
+}
+
+.board-row{
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+}
+
+.cell-wrap{
+  position: relative;
+  width: var(--cell);
+  height: var(--cell);
+}
+
+/* Input */
+.cell{
+  width: var(--cell);
+  height: var(--cell);
+
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.22);
+
+  outline: none;
+  padding: 0;
+  margin: 0;
+
+  caret-color: rgba(255,255,255,0.95);
+  user-select: none;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.20s ease;
+}
+
+.cell-wrap > .cell{
+  position: relative;
+  z-index: 2;
+  background: transparent; /* No tapar el fondo */
+} 
+
+/* Poner colores de fondo como tablero de ajedrez */
+.board-row:nth-child(odd) .cell-wrap:nth-child(even) .cell,
+.board-row:nth-child(even) .cell-wrap:nth-child(odd) .cell{
+  box-shadow: inset 0 0 0 999px rgba(34, 65, 245, 0.12);
+}
+
+/* Bordes 3x3 */
+.board-row:nth-child(3n) .cell{
+  border-bottom-width: 3px;
+  border-bottom-color: rgba(255,255,255,0.45);
+}
+.board-row .cell-wrap:nth-child(3n) .cell{
+  border-right-width: 3px;
+  border-right-color: rgba(255,255,255,0.45);
+}
+
+/* Bordes exteriores */
+.board-row:first-child .cell{
+  border-top-width: 3px;
+  border-top-color: rgba(255,255,255,0.45);
+}
+.board-row .cell-wrap:first-child .cell{
+  border-left-width: 3px;
+  border-left-color: rgba(255,255,255,0.45);
+}
+
+/* Foco visible */
+.cell:focus{
+  box-shadow:
+    inset 0 0 0 999px rgba(59,130,246,0.12),
+    inset 0 0 0 2px rgba(59,130,246,0.55);
+}
+
+/* Estados */
+
+/* Correcto */
+.cell.correct{
+  box-shadow:
+    inset 0 0 0 999px rgba(34,197,94,0.35),
+    inset 0 0 0 2px rgba(34,197,94,0.90) !important;
+}
+
+/* Error */
+.cell.error{
+  box-shadow:
+    inset 0 0 0 999px rgba(220,38,38,0.35),
+    inset 0 0 0 2px rgba(220,38,38,0.90) !important;
+}
+
+/* Seleccionado */
+.cell.selected:not(.error):not(.correct){
+  box-shadow:
+    inset 0 0 0 999px rgba(59,130,246,0.25),
+    inset 0 0 0 2px rgba(59,130,246,0.80) !important;
+}
+
+/* Fijo */
+.cell.fixed{
+  box-shadow: inset 0 0 0 999px rgba(255,255,255,0.10);
+  font-weight: 900;
+}
+
+/* Si fijo y correcto/error, se ven igual */
+.cell.fixed.correct{
+  box-shadow:
+    inset 0 0 0 999px rgba(34,197,94,0.35),
+    inset 0 0 0 2px rgba(34,197,94,0.90) !important;
+}
+.cell.fixed.error{
+  box-shadow:
+    inset 0 0 0 999px rgba(220,38,38,0.35),
+    inset 0 0 0 2px rgba(220,38,38,0.90) !important;
+}
+
+.keypad-card{
+  display: flex;
+  flex-direction: column;
+}
+
+.keypad-bottom{
+  margin-top: 12px;
+}
+
+/* Notas */
+.btn-notes{
+  width: 100%;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+.btn-notes:hover{
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.30);
+}
+.btn-notes:active{
+  transform: translateY(1px);
+}
+.btn-notes.on{
+  background: rgba(59,130,246,0.25);
+  border-color: rgba(59,130,246,0.65);
+}
+
+.notes{
   position: absolute;
+  inset: 2px;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  pointer-events: none;
+  opacity: 0.9;
+}
 
-  /* Cuvrir solo el tablero */
-  top: 18px;                 
-  left: 18px;
-  right: 18px;
+.note{
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 1;
+  color: rgba(255,255,255,0.65);
+  transform: translateY(-1px);
+}
 
-  /* Altura exacta del tablero: 9 celdas */
-  height: calc(44px * 9);
+.note.on{
+  opacity: 1;
+  color: rgba(255,255,255,0.95);
+  font-weight: 800;
+}
 
+/* No mostrar notas en fijas */
+.cell.fixed + .notes,
+.cell.fixed ~ .notes{
   display: none;
+}
+
+/* Teclado numérico */
+.keypad-card{
+  padding: 12px;
+}
+
+.num-row{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.num-row:last-child{ margin-bottom: 0; }
+
+.pad-btn{
+  width: var(--pad);
+  height: var(--pad);
+
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(11, 29, 58, 0.45); /* Sin blur */
+  border-radius: 999px; /* Cada tecla como si fuera una burbuja */
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.07);
+
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.15rem;
+
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.pad-btn:hover{
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.30);
+}
+
+.pad-btn:active{
+  transform: translateY(1px);
+}
+
+/* Mensajes */
+.status{
+  margin: 12px 0 0;
+  min-height: 20px;
+  opacity: 0.9;
+  min-height: 22px;    
+  padding: 8px 10px;
+}
+
+/* Pausa sobre el tablero */
+.board-pause{
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: calc(var(--cell) * 9 + 8px);
+  height: calc(var(--cell) * 9);
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(11, 29, 58, 0.45);
   border-radius: 12px;
   z-index: 20;
 }
 
-/* Visible */
-.board-pause.show{
-  display: flex;
-}
+.board-pause.show{ display: flex; }
 
-/* Cartel */
 .board-pause-box{
   padding: 10px 14px;
   border-radius: 12px;
@@ -326,30 +408,31 @@
   letter-spacing: 0.5px;
 }
 
-/* Responsive */
-@media (max-width: 980px) {
-  .game-layout {
-    grid-template-columns: 1fr;
+/* Diseño responsive */
+@media (max-width: 980px){
+  .game-layout{
+    grid-template-columns: 1fr; 
   }
-
-  .cell {
-    width: 40px;
-    height: 40px;
+  :root{
+    --cell: 34px;
+    --pad: 42px;
   }
-
-  .cell-wrap{ width: 40px; height: 40px; }
-  .board-pause{ height: calc(40px * 9); }
   .note{ font-size: 9px; }
 }
 
-@media (max-width: 520px) {
-  .cell {
-    width: 34px;
-    height: 34px;
-    font-size: 1rem;
+@media (max-width: 520px){
+  :root{
+    --cell: 30px;
+    --pad: 38px;
   }
-
-  .cell-wrap{ width: 34px; height: 34px; }
-  .board-pause{ height: calc(34px * 9); }
+  .cell{ font-size: 1rem; }
   .note{ font-size: 8px; }
+}
+
+/* Si es ultra pequeño, permitir scroll horizontal */
+@media (max-width: 380px){
+  .board-section{
+    overflow-x: auto;
+    justify-content: start;
+  }
 }

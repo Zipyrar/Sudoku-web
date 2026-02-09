@@ -177,13 +177,36 @@
                     </div>
                 </div>
             
-            <!-- Mostrar Sudoku pausado -->
-            <div class="board-pause" id="board-pause" aria-hidden="true">
-                <div class="board-pause-box">PAUSADO</div>
-            </div>
+                <!-- Mostrar Sudoku pausado -->
+                <div class="board-pause" id="board-pause" aria-hidden="true">
+                    <div class="board-pause-box">PAUSADO</div>
+                </div>
 
-            <!-- Mensajes -->
-            <p class="status" id="status"></p>
+                <!-- Teclado numérico para móviles -->
+                <div class="panel-card keypad-card">
+                    <div class="num-row">
+                        <button type="button" class="pad-btn" data-n="1">1</button>
+                        <button type="button" class="pad-btn" data-n="2">2</button>
+                        <button type="button" class="pad-btn" data-n="3">3</button>
+                    </div>
+                    <div class="num-row">
+                        <button type="button" class="pad-btn" data-n="4">4</button>
+                        <button type="button" class="pad-btn" data-n="5">5</button>
+                        <button type="button" class="pad-btn" data-n="6">6</button>
+                    </div>
+                    <div class="num-row">
+                        <button type="button" class="pad-btn" data-n="7">7</button>
+                        <button type="button" class="pad-btn" data-n="8">8</button>
+                        <button type="button" class="pad-btn" data-n="9">9</button>
+                    </div>
+
+                    <div class="keypad-bottom">
+                        <button type="button" class="btn-notes" id="btn-notes">📝 OFF</button>
+                    </div>
+                </div>
+
+                <!-- Mensajes de información -->
+                <p class="status" id="status"></p>
             </section>
 
             <!-- Panel lateral -->
@@ -191,7 +214,6 @@
                 <div class="panel-card">
                     <h3>Opciones</h3>
                     <div class="panel-actions">
-                        <button type="button" class="btn" id="btn-notes">Notas: OFF</button>
                         <button type="button" class="btn" id="btn-pause">Pausar</button>
                         <button type="button" class="btn" id="btn-reset">Reiniciar</button>
                         <button type="button" class="btn" id="btn-hint">Pista</button>
