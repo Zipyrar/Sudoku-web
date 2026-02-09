@@ -8,7 +8,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnPause = document.getElementById("btn-pause");
     const btnNotes = document.getElementById("btn-notes");
     const btnHint = document.getElementById("btn-hint");
-    const btnAbandon = document.getElementById("btn-abandon")
+    const btnAbandon = document.getElementById("btn-abandon");
+    const btnSave = document.getElementById("btn-save");
+    const btnLoad = document.getElementById("btn-load");
+
+    if (btnSave) {
+        btnSave.addEventListener("click", () => {
+            alert("Se necesita tener una cuenta para guardar tus partidas.");
+            btnSave.disabled = true;
+        });
+    }
+    if (btnLoad) {
+        btnLoad.addEventListener("click", () => {
+            alert("Se necesita tener una cuenta para cargar tus partidas.");
+            btnLoad.disabled = true;
+        });
+    }
 
     const difficultySel = document.getElementById("difficulty");
     const timerEl = document.getElementById("timer");
@@ -21,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         easy: { holes: 38, maxMistakes: 8, maxHints: 5 },
         medium: { holes: 48, maxMistakes: 5, maxHints: 3 },
         hard: { holes: 56, maxMistakes: 3, maxHints: 1 },
+        expert: { holes: 70, maxMistakes: 1, maxHints: 0},
     };
 
     // Notas.
@@ -102,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             setNotesMode(!notesMode)
         });
+
         setNotesMode(false);
     }
 
@@ -191,7 +208,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (paused){
             stopTimer();
             setBoardEnabled(false);
-            if (btnPause) btnPause.textContent = "Reanudar";
+            if (btnPause) {
+                btnPause.textContent = "Reanudar";
+                if (btnHint) btnHint.disabled = true;
+                if (btnReset) btnReset.disabled = true;
+                if (btnSave) btnSave.disabled = true;
+                if (btnLoad) btnLoad.disabled = true;
+            }
             if (boardPause){
             boardPause.classList.add("show");
             boardPause.setAttribute("aria-hidden", "false");
@@ -199,7 +222,13 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             startTimer();
             setBoardEnabled(true);
-            if (btnPause) btnPause.textContent = "Pausar";
+            if (btnPause) {
+                btnPause.textContent = "Pausar";
+                if (btnHint) btnHint.disabled = false;
+                if (btnReset) btnReset.disabled = false;
+                if (btnSave) btnSave.disabled = false;
+                if (btnLoad) btnLoad.disabled = false;
+            }
             if (boardPause){
             boardPause.classList.remove("show");
             boardPause.setAttribute("aria-hidden", "true");
@@ -222,6 +251,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Estado de juego.
     let currentSolution = null;
 
+    let correctCount = 0;
+    const correctlyFixedCells = new Set();
     let maxMistakes = CONFIG.easy.maxMistakes;
     let mistakes = 0; // Errores acumulados.
     let maxHints = CONFIG.easy.maxHints;
@@ -416,8 +447,11 @@ document.addEventListener("DOMContentLoaded", () => {
         setStatus(
         `¡Sudoku completado! Tiempo: ${formatTime(seconds)} | Errores: ${mistakes}/${maxMistakes} | Pistas usadas: ${hintsUsed}/${maxHints}`
         );
+        if (btnPause) btnPause.disabled = true;
         if (btnReset) btnReset.disabled = true;
         if (btnHint) btnHint.disabled = true;
+        const diff = difficultySel?.value ?? "easy";
+        SudokuStats.recordWin({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes: mistakes });
     };
 
     // Contadores.
@@ -468,6 +502,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Bloquear durante el verde.
             cell.disabled = true;
+
+            if (!correctlyFixedCells.has(idx)) {
+                correctlyFixedCells.add(idx);
+                correctCount += 1;
+            }
 
             // Verde un rato, luego pasa a fijo.
             setTimeout(() => {
@@ -664,6 +703,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const diff = difficultySel?.value ?? "easy";
             const gen = generateSudoku(diff);
 
+            correctCount = 0;
+            correctlyFixedCells.clear();
             currentSolution = gen.solution;
             maxMistakes = gen.cfg.maxMistakes;
             maxHints = gen.cfg.maxHints;
@@ -675,8 +716,13 @@ document.addEventListener("DOMContentLoaded", () => {
             gameOver = false;
             gameWon = false;
 
+            if (btnPause) btnPause.disabled = false;
             if (btnReset) btnReset.disabled = false;
             if (btnHint) btnHint.disabled = false;
+            if (btnAbandon) btnAbandon.disabled = false;
+
+            if (btnSave) btnSave.disabled = false;
+            if (btnLoad) btnLoad.disabled = false;
 
             // Notas: limpiar y OFF
             clearAllNotes();
@@ -691,6 +737,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             refreshStatus();
             focusByIndex(0);
+
+            SudokuStats.recordStart({ difficulty: diff });
         });
     }
 
@@ -718,12 +766,17 @@ document.addEventListener("DOMContentLoaded", () => {
             boardPause.classList.remove("show");
             boardPause.setAttribute("aria-hidden", "true");
         }
+        if(btnReset) btnReset.disabled = true;
+        if(btnAbandon) btnAbandon.disabled = true;
 
         // Mensaje claro.
         setStatus("Partida abandonada.", "error");
 
         // Desactivar botones.
         disableGameButtonsAfterEnd();
+
+        const diff = difficultySel?.value ?? "easy";
+        SudokuStats.recordLoss({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes: mistakes });
     }
 
     function disableGameButtonsAfterEnd() {
