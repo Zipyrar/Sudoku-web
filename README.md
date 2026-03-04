@@ -79,7 +79,7 @@
   - [x] Generar Sudokus.
   - [ ] Estadísticas.
 
-- [ ] Usar MariaDB o MySQL.
+- [x] Usar SQL con MariaDB.
 </ul>
 
 <br/>
