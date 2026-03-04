@@ -47,7 +47,7 @@
     <li>CSS: Decora la web y la hace diseño responsive (se ajusta al tamaño de la pantalla).</li>
     <li>JavaScript: Contiene la lógica.</li>
     <li>PHP: Permite crear una cuenta y guardar información (guardar partida, estadísticas...)</li>
-    <li>MariaDB/MySQL (una de las dos).</li>
+    <li>MariaDB: Crea la base de datos con un SQL.</li>
   </ul>
 <br/>
 <h3><u>Tareas</u></h3>
