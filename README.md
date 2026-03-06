@@ -32,13 +32,21 @@
 <h3>📁<u>Descargar, descomprimir y ejecutar el proyecto</u>📂</h3>
 <hr/>
 <p>Ve al Github principal, pincha en '<> Code' y le das a <b>'Download ZIP'</b>.</p>
-<p>Descomprime el archivo haciendo clic derecho, y pulsando en la opción 'Extraer todo' o 'Extraer aquí'.</p>
+<p>Descomprime la carpeta .zip haciendo clic derecho, y pulsando en la opción 'Extraer todo' o 'Extraer aquí'.</p>
+<p>Te aparecerá otra carpeta con el mismo nombre dentro del <u>Sudoku-web</u>. Para más comodidad, saca esa carpeta de dentro, para que sea más directo.</p>
 <p><b>Advertencia: no mover ningún archivo de lugar o cambiarle el nombre, podría provocar errores.</b></p>
-<p>Una vez descomprimido, se debe abrir con 'Visual Studio Code' (si no lo tiene, use este enlace para descargarlo. https://code.visualstudio.com/ Lo descarga, instala, y ya lo tendría).</p>
-<p>Abre el programa de Visual, le da a 'File' -> 'Open Folder...' y busca la carpeta de 'Sudoku-web' descomprimida.</p>
-<p>Una vez listo, le da al símbolo de cuadrados llamado 'Extensions'. Busca la extensión 'Live Server' y la instala.</p>
-<p>Ya con todo listo, va al html, y le da clic derecho y pulsa en la opción 'Open with Live Server'.</p>
-<p>Ya podrá usar la aplicación sin inconvenientes.</p>
+<p>Una vez descomprimido, necesitarás descargar XAMPP (necesario para poder registrarse e iniciar sesión):</p>
+  <ul>
+    <li>Ve a https://www.apachefriends.org/</li>
+    <li>Según tu navegador, pulsa en 'XAMPP for ...'</li>
+    <li>Instala el installer,y espera unos minutos.</li>
+    <li>Una vez instalado, ejecuta 'XAMPP Control Panel', y dale a 'Start' en Apache y MySQL</li>
+    <li>Deberían ponerse en verde si todo fue bien.</li>
+    <li>En el explorador de archivos, ve a 'C:\xampp\htdocs' (o donde sea que hayas puesto los archivos de XAMPP).</li>
+    <li>Copia o corta el archivo <u>Sudoku-web</u>, y pégalo en el htdocs.</li>
+  </ul>
+<p>Con todo eso listo, abre una pestaña y pon <u>http://localhost/Sudoku-web/</u></p>
+<p>Ya puedes empezar a jugar al Sudoku.</p>
 <br/>
 <h3><u>Tecnologías usadas</u></h3>
 <hr/>
@@ -67,17 +75,17 @@
   - [x] Estadísticas.
   - [x] Inicio y registro.
 
-- [ ] Hacer PHP para:
-  - [ ] Registro.
-  - [ ] Inicio de sesión.
-  - [ ] Cerrar sesión.
-  - [ ] Juego de Sudoku.
-  - [ ] Estadísticas.
+- [x] Hacer PHP para:
+  - [x] Registro.
+  - [x] Inicio de sesión.
+  - [x] Cerrar sesión.
+  - [x] Juego de Sudoku.
+  - [x] Estadísticas.
 
-- [ ] Usar JavaScript:
+- [x] Usar JavaScript:
   - [x] Inicio y registro.
   - [x] Generar Sudokus.
-  - [ ] Estadísticas.
+  - [x] Estadísticas.
 
 - [x] Usar SQL con MariaDB.
 </ul>
