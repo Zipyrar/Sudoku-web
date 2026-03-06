@@ -6,8 +6,9 @@
     $db   = 'sudoku_web';
 
     $conn = new mysqli($host, $username, $pass, $db);
+    $conn->set_charset("utf8mb4");
 
-    if (!$conn) {
-        die("Error de conexión: " . mysqli_connect_error());
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
     }
 ?>

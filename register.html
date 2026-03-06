@@ -19,6 +19,7 @@
                     <li><a href="game.html">Jugar</a></li>
                     <li><a href="stats.html">Estadísticas</a></li>
                     <li><a href="login.html">Iniciar sesión</a></li>
+                    <li><a href="php/logout.php">Cerrar sesión</a></li>
                 </ul>
             </nav>
         </div>
@@ -30,7 +31,7 @@
             <h2>Crear cuenta</h2>
             <p class="main-phrase">Regístrate para guarda tus partidas y consultar tus estadísticas.</p>
             <!-- Formulario -->
-            <form action="#" method="post">
+            <form action="php/register.php" method="post">
                 <div class="form-group">
                     <label for="username">Nombre de usuario</label>
                     <input type="text" id="username" name="username" placeholder="Tu nombre de usuario" required minlength="3" maxlength="20">
