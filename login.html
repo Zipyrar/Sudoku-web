@@ -19,7 +19,6 @@
                     <li><a href="game.html">Jugar</a></li>
                     <li><a href="stats.html">Estadísticas</a></li>
                     <li><a href="register.html">Registrarse</a></li>
-                    <li><a href="php/logout.php">Cerrar sesión</a></li>
                 </ul>
             </nav>
         </div>
@@ -41,6 +40,7 @@
                     <input type="password" id="password" name="password" placeholder="******" required minlength="6">
                 </div>
                 <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                <input type="hidden" name="csrf_token" value="">
             </form>
 
             <p class="form-footer">
@@ -56,5 +56,6 @@
     </footer>
 
     <script defer src="assets/js/sessions.js"></script>
+    <script defer src="assets/js/auth_ui.js"></script>
 </body>
 </html>

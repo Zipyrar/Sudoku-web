@@ -12,22 +12,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnSave = document.getElementById("btn-save");
     const btnLoad = document.getElementById("btn-load");
 
-    if (btnSave) {
-        btnSave.addEventListener("click", () => {
-            alert("Se necesita tener una cuenta para guardar tus partidas.");
-            btnSave.disabled = true;
-        });
-    }
-    if (btnLoad) {
-        btnLoad.addEventListener("click", () => {
-            alert("Se necesita tener una cuenta para cargar tus partidas.");
-            btnLoad.disabled = true;
-        });
-    }
-
     const difficultySel = document.getElementById("difficulty");
     const timerEl = document.getElementById("timer");
     const boardPause = document.getElementById("board-pause");
+
+    let savedGameId = null;
+
+    function isLoggedIn() {
+        return !!(localStorage.getItem("sudoku_current_user") || "").trim();
+    }
+
+    async function postJson(url, payload) {
+        const res = await fetch(url, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+        return res.json();
+    }
 
     if (!cells.length) return;
 
@@ -45,6 +48,136 @@ document.addEventListener("DOMContentLoaded", () => {
     let paused = false;
 
     const notesByCell = new Map();
+
+    function serializeState() {
+        const cellsState = cells.map((cell, idx) => ({
+            idx,
+            value: cell.value || "",
+            fixed: cell.classList.contains("fixed"),
+            disabled: !!cell.disabled,
+        }));
+
+        const notesState = Array.from(notesByCell.entries()).map(([idx, set]) => [idx, Array.from(set)]);
+        return {
+            cells: cellsState,
+            notes: notesState,
+            solution: currentSolution,
+            mistakes,
+            hintsUsed,
+            maxMistakes,
+            maxHints,
+            seconds,
+            difficulty: difficultySel?.value ?? "easy",
+            correctCount,
+            correctlyFixedCells: Array.from(correctlyFixedCells),
+            penalizedCells: Array.from(penalizedCells.entries()),
+        };
+    }
+
+    function restoreState(state) {
+        if (!state || !Array.isArray(state.cells) || !Array.isArray(state.solution)) return false;
+
+        currentSolution = state.solution;
+        mistakes = Number(state.mistakes) || 0;
+        hintsUsed = Number(state.hintsUsed) || 0;
+        maxMistakes = Number(state.maxMistakes) || CONFIG.easy.maxMistakes;
+        maxHints = Number(state.maxHints) || CONFIG.easy.maxHints;
+        seconds = Number(state.seconds) || 0;
+        correctCount = Number(state.correctCount) || 0;
+        gameOver = false;
+        gameWon = false;
+        paused = false;
+
+        notesByCell.clear();
+        for (let i = 0; i < cells.length; i++) notesByCell.set(i, new Set());
+        (state.notes || []).forEach(([idx, values]) => {
+            notesByCell.set(Number(idx), new Set(values || []));
+        });
+
+        correctlyFixedCells.clear();
+        (state.correctlyFixedCells || []).forEach((idx) => correctlyFixedCells.add(Number(idx)));
+
+        penalizedCells.clear();
+        (state.penalizedCells || []).forEach(([idx, value]) => penalizedCells.set(Number(idx), !!value));
+
+        state.cells.forEach((item) => {
+            const cell = cells[item.idx];
+            if (!cell) return;
+            cell.value = item.value || "";
+            cell.classList.remove("error", "correct", "selected", "fixed");
+            if (item.fixed) cell.classList.add("fixed");
+            cell.disabled = !!item.disabled;
+        });
+
+        cells.forEach((_, idx) => renderNotes(idx));
+        if (difficultySel && state.difficulty) difficultySel.value = state.difficulty;
+        if (timerEl) timerEl.textContent = formatTime(seconds);
+        if (btnHint) btnHint.disabled = hintsUsed >= maxHints;
+        if (btnPause) btnPause.disabled = false;
+        if (btnReset) btnReset.disabled = false;
+        if (btnAbandon) btnAbandon.disabled = false;
+        if (btnSave) btnSave.disabled = false;
+        if (btnLoad) btnLoad.disabled = false;
+        refreshStatus();
+        return true;
+    }
+
+    async function saveCurrentGameState() {
+        if (!currentSolution) {
+            alert("Primero inicia una partida.");
+            return;
+        }
+        if (!isLoggedIn()) {
+            alert("Se necesita tener una cuenta para guardar tus partidas.");
+            return;
+        }
+        const payload = {
+            game_id: savedGameId,
+            difficulty: difficultySel?.value ?? "easy",
+            status: "in_progress",
+            time: seconds,
+            correct: correctCount,
+            mistakes,
+            hints_used: hintsUsed,
+            state_json: serializeState(),
+        };
+        try {
+            const data = await postJson("php/save_game.php", payload);
+            if (!data.ok) throw new Error(data.error || "No se pudo guardar");
+            savedGameId = data.game_id ?? savedGameId;
+            setStatus("Partida guardada correctamente.");
+        } catch (err) {
+            alert(err.message || "No se pudo guardar la partida.");
+        }
+    }
+
+    async function loadSavedGameState() {
+        if (!isLoggedIn()) {
+            alert("Se necesita tener una cuenta para cargar tus partidas.");
+            return;
+        }
+        try {
+            const res = await fetch("php/load_state.php", { credentials: "include" });
+            const data = await res.json();
+            if (!res.ok || !data.ok) throw new Error(data.error || "No hay partidas guardadas");
+            const game = data.game;
+            savedGameId = game.game_id;
+            if (!restoreState(game.state)) throw new Error("La partida guardada no es válida.");
+            stopTimer();
+            startTimer();
+            focusByIndex(0);
+            setStatus("Partida cargada correctamente.");
+        } catch (err) {
+            alert(err.message || "No se pudo cargar la partida.");
+        }
+    }
+
+    if (btnSave) {
+        btnSave.addEventListener("click", saveCurrentGameState);
+    }
+    if (btnLoad) {
+        btnLoad.addEventListener("click", loadSavedGameState);
+    }
 
     function buildNotesUI() {
         cells.forEach((cell, idx) => {
@@ -450,8 +583,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnPause) btnPause.disabled = true;
         if (btnReset) btnReset.disabled = true;
         if (btnHint) btnHint.disabled = true;
+        if (btnSave) btnSave.disabled = true;
+        if (btnLoad) btnLoad.disabled = true;
+
         const diff = difficultySel?.value ?? "easy";
         SudokuStats.recordWin({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes: mistakes });
+        if (isLoggedIn()) {
+            postJson("php/save_game.php", {
+                game_id: savedGameId,
+                difficulty: diff,
+                status: "win",
+                time: seconds,
+                correct: correctCount,
+                mistakes,
+                hints_used: hintsUsed,
+                state_json: serializeState(),
+            }).catch(() => {});
+        }
     };
 
     // Contadores.
@@ -525,7 +673,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (mistakes >= maxMistakes) {
                     refreshStatus();
+                    disableGameButtonsAfterEnd();
                     endGame(`Has cometido ${maxMistakes} errores. ¡Fin de la partida!`);
+                    const diff = difficultySel?.value ?? "easy";
+                    SudokuStats.recordLoss({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes });
+                    if (isLoggedIn()) {
+                        postJson("php/save_game.php", {
+                            game_id: savedGameId,
+                            difficulty: diff,
+                            status: "loss",
+                            time: seconds,
+                            correct: correctCount,
+                            mistakes,
+                            hints_used: hintsUsed,
+                            state_json: serializeState(),
+                        }).catch(() => {});
+                    }
                     return;
                 }
             }
@@ -705,6 +868,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             correctCount = 0;
             correctlyFixedCells.clear();
+            savedGameId = null;
             currentSolution = gen.solution;
             maxMistakes = gen.cfg.maxMistakes;
             maxHints = gen.cfg.maxHints;
@@ -777,11 +941,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const diff = difficultySel?.value ?? "easy";
         SudokuStats.recordLoss({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes: mistakes });
+        if (isLoggedIn()) {
+            postJson("php/save_game.php", {
+                game_id: savedGameId,
+                difficulty: diff,
+                status: "abandoned",
+                time: seconds,
+                correct: correctCount,
+                mistakes,
+                hints_used: hintsUsed,
+                state_json: serializeState(),
+            }).catch(() => {});
+        }
     }
 
     function disableGameButtonsAfterEnd() {
         const ids = [
             "btn-pause",
+            "btn-reset",
+            "btn-abandon",
             "btn-notes",
             "btn-hint",
             "btn-save",

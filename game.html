@@ -17,8 +17,25 @@
                 <ul class="nav-list">
                     <li><a href="index.html">Volver a inicio</a></li>
                     <li><a href="stats.html">Estadísticas</a></li>
-                    <li><a href="login.html">Iniciar sesión</a></li>
-                    <li><a href="register.html">Registrarse</a></li>
+
+                    <li id="nav-login">
+                        <a href="login.html">Iniciar sesión</a>
+                    </li>
+
+                    <li id="nav-register">
+                        <a href="register.html">Registrarse</a>
+                    </li>
+
+                    <li id="nav-logout" style="display:none;">
+                        <a href="php/logout.php">Cerrar sesión</a>
+                    </li>
+
+                    <li id="nav-delete-account" style="display:none;">
+                        <a href="php/delete_account.php"
+                        onclick="return confirm('¿Seguro que quieres eliminar tu cuenta?');">
+                            Eliminar cuenta
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -176,11 +193,11 @@
                         <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="7">
                         <input class="cell" type="text" maxlength="1" inputmode="numeric" data-row="8" data-col="8">
                     </div>
-                </div>
-            
-                <!-- Mostrar Sudoku pausado -->
-                <div class="board-pause" id="board-pause" aria-hidden="true">
-                    <div class="board-pause-box">PAUSADO</div>
+
+                    <!-- Mostrar Sudoku pausado -->
+                    <div class="board-pause" id="board-pause" aria-hidden="true">
+                        <div class="board-pause-box">PAUSADO</div>
+                    </div>
                 </div>
 
                 <!-- Teclado numérico para móviles -->
@@ -250,5 +267,6 @@
 
     <script src="assets/js/sudoku_game.js"></script>
     <script defer src="assets/js/stats.js"></script>
+    <script defer src="assets/js/auth_ui.js"></script>
 </body>
 </html>
