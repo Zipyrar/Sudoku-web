@@ -38,15 +38,21 @@
 <p>Una vez descomprimido, necesitarás descargar XAMPP (necesario para poder registrarse e iniciar sesión):</p>
   <ul>
     <li>Ve a https://www.apachefriends.org/</li>
-    <li>Según tu navegador, pulsa en 'XAMPP for ...'</li>
-    <li>Instala el installer,y espera unos minutos.</li>
+    <li>Descarga la versión correspondiente a tu sistema operativo ('XAMPP for ...')</li>
+    <li>Ejecuta el instalador y espera a que finalice la instalación.</li>
     <li>Una vez instalado, ejecuta 'XAMPP Control Panel', y dale a 'Start' en Apache y MySQL</li>
     <li>Deberían ponerse en verde si todo fue bien.</li>
     <li>En el explorador de archivos, ve a 'C:\xampp\htdocs' (o donde sea que hayas puesto los archivos de XAMPP).</li>
     <li>Copia o corta el archivo <u>Sudoku-web</u>, y pégalo en el htdocs.</li>
   </ul>
 <p>Con todo eso listo, abre una pestaña y pon <u>http://localhost/Sudoku-web/</u></p>
-<p>Ya puedes empezar a jugar al Sudoku.</p>
+<p>Una vez el proyecto está ejecutándose en el servidor, los usuarios pueden acceder desde cualquier dispositivo con navegador:</p>
+<ul>
+  <li>Ordenador</li>
+  <li>Tablet</li>
+  <li>Móvil</li>
+</ul>
+<p>Simplemente accediendo a la dirección web de la aplicación.</p>
 <br/>
 <h3><u>Tecnologías usadas</u></h3>
 <hr/>
@@ -93,7 +99,7 @@
 <br/>
 <h3>🤵<u>Desarrollador</u></h3>
 <hr/>
-<p><img src="https://github.com/user-attachments/assets/d02d9333-4b01-4801-ba56-fa7795e27da9" widht="300" height="300"/><br/><sub>Alonso García Castiñeira</sub></p>
+<p><img src="https://github.com/user-attachments/assets/d02d9333-4b01-4801-ba56-fa7795e27da9" width="300" height="300"/><br/><sub>Alonso García Castiñeira</sub></p>
 <br/>
 <h3><u>Licencia</u></h3>
 <hr/>
