@@ -98,6 +98,20 @@
             <button class="btn" type="button" id="btn-reset-stats" disabled>
                 Reiniciar estadísticas
             </button>
+            <a id="btn-logout" href="php/logout.php" style="display:none;">
+                <button class="btn btn-danger" type="button">
+                    Cerrar sesión
+                </button>
+            </a>
+
+            <a id="btn-delete-account"
+            href="php/delete_account.php"
+            style="display:none;"
+            onclick="return confirm('¿Seguro que quieres eliminar tu cuenta?');">
+                <button class="btn btn-danger" type="button">
+                    Eliminar cuenta
+                </button>
+            </a>
         </section>
     </main>
 
@@ -107,5 +121,6 @@
     </footer>
 
     <script src="assets/js/stats.js"></script>
+    <script defer src="assets/js/auth_ui.js"></script>
 </body>
 </html>
