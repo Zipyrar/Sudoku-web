@@ -111,12 +111,13 @@
   opacity: 0.9;
 }
 
-/* Tablero y teclado (con notas) */
+/* Variables de tamaño */
 :root{
   --cell: 44px;
   --pad: 54px;
 }
 
+/* Sección del tablero: tablero + teclado en fila, status abajo */
 .board-section{
   position: relative;
   display: grid;
@@ -134,7 +135,6 @@
 .status{ grid-area: status; }
 
 /* Tablero */
-
 .board {
   display: grid;
   grid-template-rows: repeat(9, 1fr);
@@ -144,7 +144,7 @@
 
 .board-row{
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(9, var(--cell));
 }
 
 .cell-wrap{
@@ -182,10 +182,10 @@
 .cell-wrap > .cell{
   position: relative;
   z-index: 2;
-  background: transparent; /* No tapar el fondo */
-} 
+  background: transparent;
+}
 
-/* Poner colores de fondo como tablero de ajedrez */
+/* Ajedrez de fondo */
 .board-row:nth-child(odd) .cell-wrap:nth-child(even) .cell,
 .board-row:nth-child(even) .cell-wrap:nth-child(odd) .cell{
   box-shadow: inset 0 0 0 999px rgba(34, 65, 245, 0.12);
@@ -211,45 +211,38 @@
   border-left-color: rgba(255,255,255,0.45);
 }
 
-/* Foco visible */
+/* Foco */
 .cell:focus{
   box-shadow:
     inset 0 0 0 999px rgba(59,130,246,0.12),
     inset 0 0 0 2px rgba(59,130,246,0.55);
-  
   caret-color: transparent;
 }
 
 /* Estados */
-
-/* Correcto */
 .cell.correct{
   box-shadow:
     inset 0 0 0 999px rgba(34,197,94,0.35),
     inset 0 0 0 2px rgba(34,197,94,0.90) !important;
 }
 
-/* Error */
 .cell.error{
   box-shadow:
     inset 0 0 0 999px rgba(220,38,38,0.35),
     inset 0 0 0 2px rgba(220,38,38,0.90) !important;
 }
 
-/* Seleccionado */
 .cell.selected:not(.error):not(.correct){
   box-shadow:
     inset 0 0 0 999px rgba(59,130,246,0.25),
     inset 0 0 0 2px rgba(59,130,246,0.80) !important;
 }
 
-/* Fijo */
 .cell.fixed{
   box-shadow: inset 0 0 0 999px rgba(255,255,255,0.10);
   font-weight: 900;
 }
 
-/* Si fijo y correcto/error, se ven igual */
 .cell.fixed.correct{
   box-shadow:
     inset 0 0 0 999px rgba(34,197,94,0.35),
@@ -261,16 +254,17 @@
     inset 0 0 0 2px rgba(220,38,38,0.90) !important;
 }
 
+/* Teclado numérico */
 .keypad-card{
   display: flex;
   flex-direction: column;
+  padding: 12px;
 }
 
 .keypad-bottom{
   margin-top: 12px;
 }
 
-/* Notas */
 .btn-notes{
   width: 100%;
   height: 44px;
@@ -294,6 +288,7 @@
   border-color: rgba(59,130,246,0.65);
 }
 
+/* Notas dentro de celda */
 .notes{
   position: absolute;
   inset: 2px;
@@ -322,15 +317,9 @@
   font-weight: 800;
 }
 
-/* No mostrar notas en fijas */
 .cell.fixed + .notes,
 .cell.fixed ~ .notes{
   display: none;
-}
-
-/* Teclado numérico */
-.keypad-card{
-  padding: 12px;
 }
 
 .num-row{
@@ -352,7 +341,7 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 999px; /* Cada tecla como si fuera una burbuja */
+  border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.07);
 
@@ -375,26 +364,23 @@
 
 /* Mensajes */
 .status{
-  margin: 12px 0 0;
-  min-height: 20px;
+  margin: 4px 0 0;
+  min-height: 22px;
   opacity: 0.9;
-  min-height: 22px;    
   padding: 8px 10px;
 }
 
 /* Pausa sobre el tablero */
 .board-pause{
   position: absolute;
-  top: 18px;
-  left: 18px;
-  width: calc(var(--cell) * 9 + 8px);
-  height: calc(var(--cell) * 9);
+  /* Cubre el área del grid-area "board" y "keypad" */
+  inset: 0;
   display: none;
 
   align-items: center;
   justify-content: center;
 
-  background: rgba(11, 29, 58, 0.45);
+  background: rgba(11, 29, 58, 0.75);
   border-radius: 12px;
   z-index: 20;
 }
@@ -410,31 +396,59 @@
   letter-spacing: 0.5px;
 }
 
-/* Diseño responsive */
-@media (max-width: 980px){
-  .game-layout{
-    grid-template-columns: 1fr; 
+/* Responsive */
+
+/* Panel lateral pasa debajo */
+@media (max-width: 980px) {
+  .game-layout {
+    grid-template-columns: 1fr;
   }
-  :root{
-    --cell: 34px;
-    --pad: 42px;
-  }
-  .note{ font-size: 9px; }
 }
 
-@media (max-width: 520px){
-  :root{
-    --cell: 30px;
-    --pad: 38px;
+/* Teclado siempre debajo del tablero en móvil */
+@media (max-width: 980px) {
+  :root {
+    --cell: 36px;
+    --pad: 44px;
   }
-  .cell{ font-size: 1rem; }
-  .note{ font-size: 8px; }
+  .note { font-size: 9px; }
+
+  .board-section {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "board"
+      "keypad"
+      "status";
+    justify-items: center;
+  }
+
+  .keypad-card {
+    width: calc(var(--cell) * 9);
+  }
+
+  .num-row {
+    gap: 0;
+  }
+
+  .pad-btn {
+    width: 100%;
+    border-radius: 12px;
+  }
 }
 
-/* Si es ultra pequeño, permitir scroll horizontal */
-@media (max-width: 380px){
-  .board-section{
-    overflow-x: auto;
-    justify-content: start;
+@media (max-width: 420px) {
+  :root {
+    --cell: 32px;
+    --pad: 40px;
   }
+  .cell { font-size: 0.95rem; }
+  .note { font-size: 8px; }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --cell: 28px;
+    --pad: 36px;
+  }
+  .note { font-size: 7px; }
 }
