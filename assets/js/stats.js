@@ -217,14 +217,6 @@
     }
 
     function recordStart({ difficulty } = {}) {
-        const d = normalizeDifficulty(difficulty);
-        const username = getCurrentUser();
-        if (username) return true;
-
-        const data = guestLoad();
-        data.stats.played += 1;
-        data.stats.difficultyCounts[d] = (data.stats.difficultyCounts[d] || 0) + 1;
-        guestSave(data);
         return true;
     }
 
@@ -291,9 +283,38 @@
         initStatsPage();
     });
 
+    function recordAbandon({ difficulty, timeSec, correct = 0, mistakes = 0 } = {}) {
+        const d = normalizeDifficulty(difficulty);
+        const username = getCurrentUser();
+        const t = Number.isFinite(timeSec) ? Math.max(0, Math.floor(timeSec)) : null;
+
+        if (!username) {
+            const data = guestLoad();
+            data.stats.played += 1;
+            data.stats.losses += 1;
+            data.stats.totalCorrect += Number(correct) || 0;
+            data.stats.totalMistakes += Number(mistakes) || 0;
+            data.stats.difficultyCounts[d] = (data.stats.difficultyCounts[d] || 0) + 1;
+            data.history.push({
+                date: formatDateISO(new Date()),
+                difficulty: d,
+                difficultyLabel: difficultyLabel(d),
+                timeSec: t,
+                correct: Number(correct) || 0,
+                mistakes: Number(mistakes) || 0,
+                status: 'abandoned',
+            });
+            guestSave(data);
+            return true;
+        }
+
+        return true;
+    }
+
     window.SudokuStats = {
         recordStart,
         recordWin,
         recordLoss,
+        recordAbandon,
     };
 })();

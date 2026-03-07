@@ -940,7 +940,7 @@ document.addEventListener("DOMContentLoaded", () => {
         disableGameButtonsAfterEnd();
 
         const diff = difficultySel?.value ?? "easy";
-        SudokuStats.recordLoss({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes: mistakes });
+        SudokuStats.recordAbandon({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes: mistakes });
         if (isLoggedIn()) {
             postJson("php/save_game.php", {
                 game_id: savedGameId,

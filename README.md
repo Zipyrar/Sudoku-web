@@ -35,21 +35,55 @@
 <p>Descomprime la carpeta .zip haciendo clic derecho, y pulsando en la opción 'Extraer todo' o 'Extraer aquí'.</p>
 <p>Te aparecerá otra carpeta con el mismo nombre dentro del <u>Sudoku-web</u>. Para más comodidad, saca esa carpeta de dentro, para que sea más directo.</p>
 <p><b>Advertencia: no mover ningún archivo de lugar o cambiarle el nombre, podría provocar errores.</b></p>
-  
+
 <p>Una vez descomprimido, necesitarás descargar XAMPP (necesario para poder registrarse e iniciar sesión):</p>
-  <ul>
-    <li>Ve a https://www.apachefriends.org/</li>
-    <li>Descarga la versión correspondiente a tu sistema operativo ('XAMPP for ...')</li>
-    <li>Ejecuta el instalador y espera a que finalice la instalación.</li>
-    <li>Una vez instalado, ejecuta 'XAMPP Control Panel', y dale a 'Start' en Apache y MySQL</li>
-    <li>Deberían ponerse en verde si todo fue bien.</li>
-    <li>En el explorador de archivos, ve a 'C:\xampp\htdocs' (o donde sea que hayas puesto los archivos de XAMPP).</li>
-    <li>Copia o mueve la carpeta 'Sudoku-web' dentro de htdocs.</li>
-  </ul>
-  
-<p>Una vez el proyecto esté ejecutándose en el ordenador con XAMPP, se puede acceder desde el navegador mediante:</p>
-<p><u>http://localhost/Sudoku-web/</u></p>
-<p>Si otros dispositivos están conectados a la misma red (por ejemplo móvil o tablet), también podrán acceder usando la dirección IP del ordenador donde se ejecuta el servidor.</p>
+<ul>
+  <li>Ve a https://www.apachefriends.org/</li>
+  <li>Descarga la versión correspondiente a tu sistema operativo ('XAMPP for ...')</li>
+  <li>Ejecuta el instalador y espera a que finalice la instalación.</li>
+  <li>Una vez instalado, ejecuta 'XAMPP Control Panel', y dale a 'Start' en Apache y MySQL.</li>
+  <li>Deberían ponerse en verde si todo fue bien.</li>
+  <li>En el explorador de archivos, ve a <code>C:\xampp\htdocs</code> (o donde hayas instalado XAMPP).</li>
+  <li>Copia o mueve la carpeta <code>Sudoku-web</code> dentro de <code>htdocs</code>.</li>
+</ul>
+
+<p>A continuación hay que crear la base de datos:</p>
+<ul>
+  <li>Abre el navegador y ve a <a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>.</li>
+  <li>En el panel izquierdo pulsa <b>Nueva</b>, escribe <code>sudoku_web</code> como nombre y pulsa <b>Crear</b>.</li>
+  <li>Con <code>sudoku_web</code> seleccionada, ve a la pestaña <b>Importar</b>.</li>
+  <li>Pulsa <b>Seleccionar archivo</b> y busca <code>Sudoku-web/assets/db/sudoku_web.sql</code>.</li>
+  <li>Pulsa <b>Importar</b> y espera a que finalice.</li>
+</ul>
+
+<p>Una vez completado, accede al proyecto desde el navegador mediante:</p>
+<p><a href="http://localhost/Sudoku-web/"><u>http://localhost/Sudoku-web/</u></a></p>
+
+<h4>Acceso desde móvil u otros dispositivos</h4>
+<p>Si quieres acceder desde un móvil o tablet conectado a la misma red WiFi, primero hay que permitir el acceso externo en Apache:</p>
+<ul>
+  <li>En el explorador de archivos, va a <code>C:\xampp\apache\conf\extra</code> y abre <code>httpd-vhosts.conf</code>.</li>
+  <li>Añade al final del archivo lo siguiente:</li>
+</ul>
+
+```apache
+<VirtualHost *:80>
+    DocumentRoot "C:/xampp/htdocs"
+    ServerName localhost
+    <Directory "C:/xampp/htdocs">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+<ul>
+  <li>Guarda el archivo y reinicia Apache desde el panel de XAMPP.</li>
+  <li>Averigua la IP del PC: abre el símbolo del sistema (<code>cmd</code>) y ejecuta <code>ipconfig</code>. Busca la línea <b>Dirección IPv4</b> (algo como <code>192.XXX.X.X</code>).</li>
+  <li>Desde el móvil, con la misma red WiFi, entra a <code>http://[IP]/Sudoku-web/</code> sustituyendo la IP por la tuya.</li>
+</ul>
+
 <br/>
 <h3><u>Tecnologías usadas</u></h3>
 <hr/>
@@ -91,7 +125,6 @@
   - [x] Estadísticas.
 
 - [x] Usar SQL con MariaDB.
-</ul>
 
 <br/>
 <h3>🤵<u>Desarrollador</u></h3>
