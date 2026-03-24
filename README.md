@@ -104,6 +104,7 @@
   - [x] Estadísticas.
   - [x] Registro.
   - [x] Inicio de sesión.
+  - [x] Ranking.
 
 - [x] Crear los CSS para los HTML:
   - [x] General (para todos los html).
@@ -111,6 +112,7 @@
   - [x] Sudoku.
   - [x] Estadísticas.
   - [x] Inicio y registro.
+  - [x] Ranking.
 
 - [x] Hacer PHP para:
   - [x] Registro.
@@ -118,11 +120,13 @@
   - [x] Cerrar sesión.
   - [x] Juego de Sudoku.
   - [x] Estadísticas.
+  - [x] Ranking global entre jugadores.
 
 - [x] Usar JavaScript:
   - [x] Inicio y registro.
   - [x] Generar Sudokus.
   - [x] Estadísticas.
+  - [x] Ranking.
 
 - [x] Usar SQL con MariaDB.
 
