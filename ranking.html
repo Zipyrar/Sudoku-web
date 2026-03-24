@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/ranking.css">
+    <title>Sudoku Web</title>
+</head>
+<body>
+    <!-- Cabecera -->
+    <header>
+        <div class="header-container">
+            <h1 class="title">Sudoku Web</h1>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Volver a inicio</a></li>
+                    <li><a href="game.html">Jugar</a></li>
+                    <li><a href="stats.html">Estadísticas</a></li>
+
+                    <li id="nav-login">
+                        <a href="login.html">Iniciar sesión</a>
+                    </li>
+                    <li id="nav-register">
+                        <a href="register.html">Registrarse</a>
+                    </li>
+                    <li id="nav-logout" style="display:none;">
+                        <a href="php/logout.php">Cerrar sesión</a>
+                    </li>
+                    <li id="nav-delete-account" style="display:none;">
+                        <a href="php/delete_account.php"
+                           onclick="return confirm('¿Seguro que quieres eliminar tu cuenta?');">
+                            Eliminar cuenta
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Principal -->
+    <main>
+
+        <!-- Cabecera de sección -->
+        <section class="ranking-header">
+            <div>
+                <h2>Ranking global</h2>
+                <p class="ranking-subtitle">
+                    Compara tu progreso con el resto de jugadores.
+                    Filtra por categoría y dificultad.
+                </p>
+            </div>
+        </section>
+
+        <!-- Filtros: categoría -->
+        <div class="tab-group" id="cat-tabs" role="tablist" aria-label="Categoría">
+            <label>Categoría:</label>
+            <button class="tab-btn active" data-cat="most_wins"      role="tab">Más victorias</button>
+            <button class="tab-btn"        data-cat="best_time"      role="tab">Mejor tiempo</button>
+            <button class="tab-btn"        data-cat="best_accuracy"  role="tab">Mejor precisión</button>
+            <button class="tab-btn"        data-cat="fewest_hints"   role="tab">Menos pistas</button>
+        </div>
+
+        <!-- Filtros: dificultad -->
+        <div class="tab-group" id="diff-tabs" role="tablist" aria-label="Dificultad">
+            <label>Dificultad:</label>
+            <button class="tab-btn active" data-diff="all"    role="tab">Todas</button>
+            <button class="tab-btn"        data-diff="easy"   role="tab">Fácil</button>
+            <button class="tab-btn"        data-diff="medium" role="tab">Media</button>
+            <button class="tab-btn"        data-diff="hard"   role="tab">Difícil</button>
+            <button class="tab-btn"        data-diff="expert" role="tab">Experta</button>
+        </div>
+
+        <!-- Tabla de ranking -->
+        <section class="ranking-section" id="ranking-section">
+            <div class="ranking-section-header">
+                <h3 id="ranking-title">Más victorias · <span class="badge badge-all">Todas las dificultades</span></h3>
+                <p id="ranking-desc">Jugadores con mayor número de partidas ganadas.</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="ranking-table" id="ranking-table">
+                    <thead id="ranking-thead">
+                        <!-- Cabeceras dinámicas -->
+                    </thead>
+                    <tbody id="ranking-tbody">
+                        <tr>
+                            <td colspan="4">
+                                <div class="ranking-loading">
+                                    <div class="spinner"></div>
+                                    <p>Cargando ranking…</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="min-note" id="min-note" style="display:none;">
+                * Se requieren mínimo 3 victorias para aparecer en este ranking.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+    </footer>
+
+    <script src="assets/js/auth_ui.js" defer></script>
+    <script src="assets/js/ranking.js" defer></script>
+</body>
+</html>
