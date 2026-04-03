@@ -3,6 +3,32 @@
     const GUEST_STATS_KEY = 'sudoku_guest_stats_v1';
     const GUEST_HIST_KEY = 'sudoku_guest_history_v1';
 
+    document.addEventListener("DOMContentLoaded", initStatsPage);
+
+    // Traducir.
+    function getLang() {
+        if (typeof window.getSudokuLang === "function") {
+            return window.getSudokuLang();
+        }
+        return localStorage.getItem("sudoku_lang") || "es";
+    }
+
+    function t(key, vars = {}) {
+        const lang = getLang();
+        const dict =
+            (window.texts && window.texts[lang]) ||
+            (typeof texts !== "undefined" && texts[lang]) ||
+            {};
+
+        let text = dict[key] || key;
+
+        Object.keys(vars).forEach((k) => {
+            text = text.replaceAll(`{${k}}`, String(vars[k]));
+        });
+
+        return text;
+    }
+
     function getCurrentUser() {
         const u = (localStorage.getItem(CURRENT_USER_KEY) || '').trim();
         return u || null;
@@ -23,22 +49,45 @@
     function normalizeDifficulty(d) {
         const x = String(d || '').toLowerCase().trim();
         if (['easy', 'facil', 'fácil'].includes(x)) return 'easy';
-        if (['medium', 'medio', 'normal'].includes(x)) return 'medium';
+        if (['medium', 'medio', 'media', 'normal'].includes(x)) return 'medium';
         if (['hard', 'dificil', 'difícil'].includes(x)) return 'hard';
-        if (['expert', 'experto'].includes(x)) return 'expert';
+        if (['expert', 'experto', 'experta'].includes(x)) return 'expert';
+        return x || 'unknown';
+    }
+
+    function normalizeStatus(s) {
+        const x = String(s || '').toLowerCase().trim();
+        if (['win', 'won', 'completed', 'complete', 'completada', 'completado'].includes(x)) return 'win';
+        if (['loss', 'lose', 'lost', 'failed', 'fallida', 'fallido'].includes(x)) return 'loss';
+        if (['abandoned', 'abandon', 'quit', 'quit game', 'abandonada', 'abandonado'].includes(x)) return 'abandoned';
         return x || 'unknown';
     }
 
     function difficultyLabel(d) {
-        const map = { easy: 'Fácil', medium: 'Media', hard: 'Difícil', expert: 'Experta' };
-        return map[d] || d || '-';
+        const key = normalizeDifficulty(d);
+        const map = {
+            easy: t("sudoku_difficulty_easy"),
+            medium: t("sudoku_difficulty_medium"),
+            hard: t("sudoku_difficulty_hard"),
+            expert: t("sudoku_difficulty_expert")
+        };
+        return map[key] || '-';
     }
 
     function favoriteDifficultyLabel(counts) {
-        const entries = Object.entries(counts || {}).filter(([key]) => key !== 'unknown');
-        if (!entries.length) return '-';
+        const normalized = { easy: 0, medium: 0, hard: 0, expert: 0 };
+
+        Object.entries(counts || {}).forEach(([key, value]) => {
+            const nk = normalizeDifficulty(key);
+            if (normalized[nk] != null) {
+                normalized[nk] += Number(value) || 0;
+            }
+        });
+
+        const entries = Object.entries(normalized);
         entries.sort((a, b) => (b[1] || 0) - (a[1] || 0));
-        const [key, value] = entries[0];
+
+        const [key, value] = entries[0] || [];
         return value ? difficultyLabel(key) : '-';
     }
 
@@ -90,7 +139,7 @@
 
     function getDomRefs() {
         return {
-            userStrong: document.querySelector('.user-badge strong'),
+            userStrong: document.getElementById('statsUsername'),
             statNumbers: document.querySelectorAll('.stats-card .stat-number'),
             historyPhrase: document.querySelector('.history .history-phrase'),
             historyTbody: document.querySelector('.history tbody'),
@@ -119,24 +168,36 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td><span class="badge badge-muted">Sin datos</span></td>
+                    <td><span class="badge badge-muted">${t("stats_history_empty")}</span></td>
                 </tr>`;
             return;
         }
 
         rows.forEach((h) => {
+            const normalizedDifficulty = normalizeDifficulty(h.difficulty);
+            const normalizedStatus = normalizeStatus(h.status);
+
             const timeText = h.timeSec != null ? formatTime(h.timeSec) : '-';
-            const diffText = h.difficultyLabel || difficultyLabel(h.difficulty);
+            const diffText = difficultyLabel(normalizedDifficulty);
             const correctText = Number.isFinite(h.correct) ? h.correct : '-';
             const mistakesText = Number.isFinite(h.mistakes) ? h.mistakes : '-';
-            const isWin = h.status === 'win';
-            const badgeClass = isWin ? 'badge' : 'badge badge-muted';
-            const badgeText = isWin ? 'Completada' : (h.status === 'loss' ? 'Fallida' : 'Abandonada');
+
+            let badgeClass = 'badge badge-muted';
+            let badgeText = t("stats_status_abandoned");
+
+            if (normalizedStatus === 'win') {
+                badgeClass = 'badge';
+                badgeText = t("stats_status_win");
+            } else if (normalizedStatus === 'loss') {
+                badgeText = t("stats_status_loss");
+            } else if (normalizedStatus === 'abandoned') {
+                badgeText = t("stats_status_abandoned");
+            }
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${h.date || '-'}</td>
-                <td>${diffText || '-'}</td>
+                <td>${diffText}</td>
                 <td>${timeText}</td>
                 <td>${correctText}</td>
                 <td>${mistakesText}</td>
@@ -159,11 +220,11 @@
         const username = getCurrentUser();
 
         if (!username) {
-            if (refs.userStrong) refs.userStrong.textContent = 'Invitado';
+            if (refs.userStrong) refs.userStrong.textContent = t("stats_guest");
             const data = guestLoad();
             renderStatsBlock(refs, data.stats);
             renderHistory(refs, data.history.slice(-20).reverse());
-            if (refs.historyPhrase) refs.historyPhrase.textContent = 'Estas son tus últimas partidas (modo invitado)';
+            if (refs.historyPhrase) refs.historyPhrase.textContent = t("stats_guest_history");
             if (refs.btnReset) {
                 refs.btnReset.disabled = false;
                 refs.btnReset.onclick = () => {
@@ -176,11 +237,11 @@
         }
 
         if (refs.userStrong) refs.userStrong.textContent = username;
-        if (refs.historyPhrase) refs.historyPhrase.textContent = 'Estas son tus últimas partidas';
+        if (refs.historyPhrase) refs.historyPhrase.textContent = t("stats_user_history");
         if (refs.btnReset) {
             refs.btnReset.disabled = false;
             refs.btnReset.onclick = async () => {
-                const ok = confirm('¿Seguro que quieres reiniciar tus estadísticas?');
+                const ok = confirm(t("stats_reset_confirm"));
                 if (!ok) return;
 
                 try {
@@ -223,7 +284,7 @@
     function recordWin({ difficulty, timeSec, correct = 0, mistakes = 0 } = {}) {
         const d = normalizeDifficulty(difficulty);
         const username = getCurrentUser();
-        const t = Number.isFinite(timeSec) ? Math.max(0, Math.floor(timeSec)) : null;
+        const tsec = Number.isFinite(timeSec) ? Math.max(0, Math.floor(timeSec)) : null;
 
         if (!username) {
             const data = guestLoad();
@@ -232,14 +293,13 @@
             data.stats.totalCorrect += Number(correct) || 0;
             data.stats.totalMistakes += Number(mistakes) || 0;
             data.stats.difficultyCounts[d] = (data.stats.difficultyCounts[d] || 0) + 1;
-            if (t != null && (data.stats.bestTimeSec == null || t < data.stats.bestTimeSec)) {
-                data.stats.bestTimeSec = t;
+            if (tsec != null && (data.stats.bestTimeSec == null || tsec < data.stats.bestTimeSec)) {
+                data.stats.bestTimeSec = tsec;
             }
             data.history.push({
                 date: formatDateISO(new Date()),
                 difficulty: d,
-                difficultyLabel: difficultyLabel(d),
-                timeSec: t,
+                timeSec: tsec,
                 correct: Number(correct) || 0,
                 mistakes: Number(mistakes) || 0,
                 status: 'win',
@@ -254,7 +314,7 @@
     function recordLoss({ difficulty, timeSec, correct = 0, mistakes = 0 } = {}) {
         const d = normalizeDifficulty(difficulty);
         const username = getCurrentUser();
-        const t = Number.isFinite(timeSec) ? Math.max(0, Math.floor(timeSec)) : null;
+        const tsec = Number.isFinite(timeSec) ? Math.max(0, Math.floor(timeSec)) : null;
 
         if (!username) {
             const data = guestLoad();
@@ -266,8 +326,7 @@
             data.history.push({
                 date: formatDateISO(new Date()),
                 difficulty: d,
-                difficultyLabel: difficultyLabel(d),
-                timeSec: t,
+                timeSec: tsec,
                 correct: Number(correct) || 0,
                 mistakes: Number(mistakes) || 0,
                 status: 'loss',
@@ -279,14 +338,10 @@
         return true;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        initStatsPage();
-    });
-
     function recordAbandon({ difficulty, timeSec, correct = 0, mistakes = 0 } = {}) {
         const d = normalizeDifficulty(difficulty);
         const username = getCurrentUser();
-        const t = Number.isFinite(timeSec) ? Math.max(0, Math.floor(timeSec)) : null;
+        const tsec = Number.isFinite(timeSec) ? Math.max(0, Math.floor(timeSec)) : null;
 
         if (!username) {
             const data = guestLoad();
@@ -298,8 +353,7 @@
             data.history.push({
                 date: formatDateISO(new Date()),
                 difficulty: d,
-                difficultyLabel: difficultyLabel(d),
-                timeSec: t,
+                timeSec: tsec,
                 correct: Number(correct) || 0,
                 mistakes: Number(mistakes) || 0,
                 status: 'abandoned',
@@ -317,4 +371,21 @@
         recordLoss,
         recordAbandon,
     };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof window.applyTranslations === "function") {
+            const lang = (window.getSudokuLang && window.getSudokuLang()) || "es";
+            window.applyTranslations(lang);
+        }
+
+        initStatsPage();
+    });
+
+    document.addEventListener("languageChanged", () => {
+        initStatsPage();
+    });
+
+    window.addEventListener("pageshow", () => {
+        initStatsPage();
+    });
 })();

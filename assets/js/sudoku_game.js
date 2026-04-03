@@ -18,6 +18,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let savedGameId = null;
 
+    // Traducir.
+    function getLang() {
+        if (typeof window.getSudokuLang === "function") {
+            return window.getSudokuLang();
+        }
+        return localStorage.getItem("sudoku_lang") || "es";
+    }
+
+    function t(key, vars = {}) {
+        const lang = getLang();
+        const dict =
+            (window.texts && window.texts[lang]) ||
+            (typeof texts !== "undefined" && texts[lang]) ||
+            {};
+
+        let text = dict[key] || key;
+
+        Object.keys(vars).forEach((k) => {
+            text = text.replaceAll(`{${k}}`, String(vars[k]));
+        });
+
+        return text;
+    }
+
     function isLoggedIn() {
         return !!(localStorage.getItem("sudoku_current_user") || "").trim();
     }
@@ -34,17 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!cells.length) return;
 
-    // Configuración de dificultad.
     const CONFIG = {
         easy: { holes: 38, maxMistakes: 8, maxHints: 5 },
         medium: { holes: 48, maxMistakes: 5, maxHints: 3 },
         hard: { holes: 56, maxMistakes: 3, maxHints: 1 },
-        expert: { holes: 70, maxMistakes: 1, maxHints: 0},
+        expert: { holes: 70, maxMistakes: 1, maxHints: 0 },
     };
 
-    // Notas.
     let notesMode = false;
-    // Pausa.
     let paused = false;
 
     const notesByCell = new Map();
@@ -119,16 +140,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnSave) btnSave.disabled = false;
         if (btnLoad) btnLoad.disabled = false;
         refreshStatus();
+        setNotesMode(notesMode);
         return true;
     }
 
     async function saveCurrentGameState() {
         if (!currentSolution) {
-            alert("Primero inicia una partida.");
+            alert(t("sudoku_alert_start_first"));
             return;
         }
         if (!isLoggedIn()) {
-            alert("Se necesita tener una cuenta para guardar tus partidas.");
+            alert(t("sudoku_alert_login_save"));
             return;
         }
         const payload = {
@@ -143,32 +165,32 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         try {
             const data = await postJson("php/save_game.php", payload);
-            if (!data.ok) throw new Error(data.error || "No se pudo guardar");
+            if (!data.ok) throw new Error(data.error || t("sudoku_save_error"));
             savedGameId = data.game_id ?? savedGameId;
-            setStatus("Partida guardada correctamente.");
+            setStatus(t("sudoku_save_ok"), "sudoku_save_ok");
         } catch (err) {
-            alert(err.message || "No se pudo guardar la partida.");
+            alert(err.message || t("sudoku_save_error"));
         }
     }
 
     async function loadSavedGameState() {
         if (!isLoggedIn()) {
-            alert("Se necesita tener una cuenta para cargar tus partidas.");
+            alert(t("sudoku_alert_login_load"));
             return;
         }
         try {
             const res = await fetch("php/load_state.php", { credentials: "include" });
             const data = await res.json();
-            if (!res.ok || !data.ok) throw new Error(data.error || "No hay partidas guardadas");
+            if (!res.ok || !data.ok) throw new Error(data.error || t("sudoku_no_saved_games"));
             const game = data.game;
             savedGameId = game.game_id;
-            if (!restoreState(game.state)) throw new Error("La partida guardada no es válida.");
+            if (!restoreState(game.state)) throw new Error(t("sudoku_load_invalid"));
             stopTimer();
             startTimer();
             focusByIndex(0);
-            setStatus("Partida cargada correctamente.");
+            setStatus(t("sudoku_load_ok"), "sudoku_load_ok");
         } catch (err) {
-            alert(err.message || "No se pudo cargar la partida.");
+            alert(err.message || t("sudoku_load_error"));
         }
     }
 
@@ -181,26 +203,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function buildNotesUI() {
         cells.forEach((cell, idx) => {
-        const wrap = document.createElement("div");
-        wrap.className = "cell-wrap";
+            const wrap = document.createElement("div");
+            wrap.className = "cell-wrap";
 
-        cell.parentNode.insertBefore(wrap, cell);
-        wrap.appendChild(cell);
+            cell.parentNode.insertBefore(wrap, cell);
+            wrap.appendChild(cell);
 
-        const notes = document.createElement("div");
-        notes.className = "notes";
-        notes.dataset.idx = String(idx);
+            const notes = document.createElement("div");
+            notes.className = "notes";
+            notes.dataset.idx = String(idx);
 
-        for (let n = 1; n <= 9; n++) {
-            const sp = document.createElement("div");
-            sp.className = "note";
-            sp.dataset.n = String(n);
-            sp.textContent = String(n);
-            notes.appendChild(sp);
-        }
+            for (let n = 1; n <= 9; n++) {
+                const sp = document.createElement("div");
+                sp.className = "note";
+                sp.dataset.n = String(n);
+                sp.textContent = String(n);
+                notes.appendChild(sp);
+            }
 
-        wrap.appendChild(notes);
-        notesByCell.set(idx, new Set());
+            wrap.appendChild(notes);
+            notesByCell.set(idx, new Set());
         });
     }
 
@@ -212,8 +234,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const set = notesByCell.get(idx) ?? new Set();
         notesEl.querySelectorAll(".note").forEach((nEl) => {
-        const n = Number(nEl.dataset.n);
-        nEl.classList.toggle("on", set.has(n));
+            const n = Number(nEl.dataset.n);
+            nEl.classList.toggle("on", set.has(n));
         });
     }
 
@@ -225,42 +247,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function clearAllNotes() {
         notesByCell.forEach((set, idx) => {
-        set.clear();
-        renderNotes(idx);
+            set.clear();
+            renderNotes(idx);
         });
     }
 
     function setNotesMode(on) {
         notesMode = !!on;
         if (btnNotes) {
-            btnNotes.textContent = `📝 ${notesMode ? "ON" : "OFF"}`;
+            btnNotes.textContent = notesMode ? t("sudoku_notes_on") : t("sudoku_notes_off");
             btnNotes.classList.toggle("on", notesMode);
         }
     }
 
-    // Construir interfaz de notas al cargar.
     buildNotesUI();
 
     if (btnNotes) {
-        btnNotes.addEventListener("click", () => { 
-            // Si no hay partida, no permitir notas.
+        btnNotes.addEventListener("click", () => {
             if (!currentSolution) return;
-
-            // Si terminó, tampoco permitir.
             if (gameOver || gameWon) return;
-
-            setNotesMode(!notesMode)
+            setNotesMode(!notesMode);
         });
 
         setNotesMode(false);
     }
 
     function getActiveCell() {
-        // Priorizar la seleccionada.
         const selected = document.querySelector(".cell.selected");
         if (selected) return selected;
 
-        // Si hay foco en una celda.
         const active = document.activeElement;
         if (active && active.classList && active.classList.contains("cell")) return active;
 
@@ -272,14 +287,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!currentSolution) return;
         if (paused) return;
         if (gameOver || gameWon) return;
-
-        // Nunca tocar celdas fijas.
         if (cell.classList.contains("fixed") || cell.disabled) return;
 
         const idx = getIndex(cell);
         if (idx == null || idx < 0) return;
 
-        // Modo notas.
         if (typeof notesMode !== "undefined" && notesMode) {
             const set = notesByCell.get(idx) ?? new Set();
             if (set.has(n)) set.delete(n);
@@ -289,16 +301,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Sobrescribir siempre, incluso con error.
         cell.value = String(n);
-
-        // Limpiar estados anteriores.
         cell.classList.remove("error", "correct");
 
-        // Limpiar notas.
         if (typeof clearNotes === "function") clearNotes(idx);
 
-        // Recalcular acierto/error.
         updateCellStateAndPenalty(cell);
 
         if (typeof refreshStatus === "function") refreshStatus();
@@ -307,7 +314,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isSolved()) winGame();
         }
     }
-
 
     padButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -318,76 +324,66 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!Number.isInteger(n) || n < 1 || n > 9) return;
 
             writeNumber(cell, n);
-
-            // Vuelve el foco a la celda.
             cell.focus();
         });
     });
 
-    function setBoardEnabled(enabled){
+    function setBoardEnabled(enabled) {
         cells.forEach(cell => {
-            // Las fijas siempre deshabilitadas.
             if (cell.classList.contains("fixed")) return;
-            // Si el juego terminó, tampoco habilitar.
             if (gameOver || gameWon) return;
-
             cell.disabled = !enabled;
         });
     }
 
-    function setPaused(on){
+    function setPaused(on) {
         paused = !!on;
 
-        if (paused){
+        if (paused) {
             stopTimer();
             setBoardEnabled(false);
             if (btnPause) {
-                btnPause.textContent = "Reanudar";
+                btnPause.textContent = t("sudoku_resume");
                 if (btnHint) btnHint.disabled = true;
                 if (btnReset) btnReset.disabled = true;
                 if (btnSave) btnSave.disabled = true;
                 if (btnLoad) btnLoad.disabled = true;
             }
-            if (boardPause){
-            boardPause.classList.add("show");
-            boardPause.setAttribute("aria-hidden", "false");
+            if (boardPause) {
+                boardPause.classList.add("show");
+                boardPause.setAttribute("aria-hidden", "false");
             }
         } else {
             startTimer();
             setBoardEnabled(true);
             if (btnPause) {
-                btnPause.textContent = "Pausar";
+                btnPause.textContent = t("sudoku_pause");
                 if (btnHint) btnHint.disabled = false;
                 if (btnReset) btnReset.disabled = false;
                 if (btnSave) btnSave.disabled = false;
                 if (btnLoad) btnLoad.disabled = false;
             }
-            if (boardPause){
-            boardPause.classList.remove("show");
-            boardPause.setAttribute("aria-hidden", "true");
+            if (boardPause) {
+                boardPause.classList.remove("show");
+                boardPause.setAttribute("aria-hidden", "true");
             }
         }
     }
 
-    if (btnPause){
+    if (btnPause) {
         btnPause.addEventListener("click", () => {
-            // Si no hay partida, no pausar.
             if (!currentSolution) return;
-
-            // Si terminó, no pausar.
             if (gameOver || gameWon) return;
-
             setPaused(!paused);
         });
     }
 
-    // Estado de juego.
     let currentSolution = null;
 
     let correctCount = 0;
     const correctlyFixedCells = new Set();
     let maxMistakes = CONFIG.easy.maxMistakes;
-    let mistakes = 0; // Errores acumulados.
+    let mistakes = 0;
     let maxHints = CONFIG.easy.maxHints;
     let hintsUsed = 0;
 
@@ -396,9 +392,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const penalizedCells = new Map();
 
-    // Interfaz.
-    const setStatus = (msg = "") => {
+    let lastStatusKey = null;
+    let lastStatusVars = {};
+
+    const setStatus = (msg = "", key = null, vars = {}) => {
         if (statusEl) statusEl.textContent = msg;
+        lastStatusKey = key;
+        lastStatusVars = vars;
     };
 
     const clearSelection = () => cells.forEach((c) => c.classList.remove("selected"));
@@ -422,8 +422,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const sanitizeToSingleDigit = (value) => String(value ?? "").replace(/[^1-9]/g, "").slice(0, 1);
 
-
-    // Timer.
     let timerId = null;
     let seconds = 0;
 
@@ -447,43 +445,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const startTimer = () => {
         stopTimer();
         timerId = setInterval(() => {
-        seconds += 1;
-        if (timerEl) timerEl.textContent = formatTime(seconds);
+            seconds += 1;
+            if (timerEl) timerEl.textContent = formatTime(seconds);
         }, 1000);
     };
 
-    // Generador Sudoku.
     const makeEmptyGrid = () => Array.from({ length: 9 }, () => Array(9).fill(0));
     const cloneGrid = (g) => g.map((row) => row.slice());
 
     const shuffle = (arr) => {
         for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
         return arr;
     };
 
     const isSafe = (grid, row, col, num) => {
         for (let i = 0; i < 9; i++) {
-        if (grid[row][i] === num) return false;
-        if (grid[i][col] === num) return false;
+            if (grid[row][i] === num) return false;
+            if (grid[i][col] === num) return false;
         }
         const br = Math.floor(row / 3) * 3;
         const bc = Math.floor(col / 3) * 3;
         for (let r = br; r < br + 3; r++) {
-        for (let c = bc; c < bc + 3; c++) {
-            if (grid[r][c] === num) return false;
-        }
+            for (let c = bc; c < bc + 3; c++) {
+                if (grid[r][c] === num) return false;
+            }
         }
         return true;
     };
 
     const findEmpty = (grid) => {
         for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-            if (grid[r][c] === 0) return [r, c];
-        }
+            for (let c = 0; c < 9; c++) {
+                if (grid[r][c] === 0) return [r, c];
+            }
         }
         return null;
     };
@@ -496,11 +493,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
         for (const n of nums) {
-        if (isSafe(grid, r, c, n)) {
-            grid[r][c] = n;
-            if (fillGrid(grid)) return true;
-            grid[r][c] = 0;
-        }
+            if (isSafe(grid, r, c, n)) {
+                grid[r][c] = n;
+                if (fillGrid(grid)) return true;
+                grid[r][c] = 0;
+            }
         }
         return false;
     };
@@ -511,12 +508,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const positions = shuffle(Array.from({ length: 81 }, (_, i) => i));
         for (const idx of positions) {
-        if (holes >= holesTarget) break;
-        const r = Math.floor(idx / 9);
-        const c = idx % 9;
-        if (puzzle[r][c] === 0) continue;
-        puzzle[r][c] = 0;
-        holes += 1;
+            if (holes >= holesTarget) break;
+            const r = Math.floor(idx / 9);
+            const c = idx % 9;
+            if (puzzle[r][c] === 0) continue;
+            puzzle[r][c] = 0;
+            holes += 1;
         }
         return puzzle;
     };
@@ -529,57 +526,62 @@ document.addEventListener("DOMContentLoaded", () => {
         return { puzzle, solution, cfg };
     };
 
-    // Cargar en interfaz.
     const loadPuzzleToUI = (puzzle) => {
         cells.forEach((cell, i) => {
-        const r = Math.floor(i / 9);
-        const c = i % 9;
-        const v = puzzle[r][c];
+            const r = Math.floor(i / 9);
+            const c = i % 9;
+            const v = puzzle[r][c];
 
-        cell.classList.remove("error", "correct", "selected");
-        cell.disabled = false;
+            cell.classList.remove("error", "correct", "selected");
+            cell.disabled = false;
 
-        // Borrar notas siempre al cargar.
-        clearNotes(i);
+            clearNotes(i);
 
-        if (v !== 0) {
-            cell.value = String(v);
-            cell.classList.add("fixed");
-            cell.disabled = true;
-        } else {
-            cell.value = "";
-            cell.classList.remove("fixed");
-        }
+            if (v !== 0) {
+                cell.value = String(v);
+                cell.classList.add("fixed");
+                cell.disabled = true;
+            } else {
+                cell.value = "";
+                cell.classList.remove("fixed");
+            }
         });
     };
 
     const isSolved = () => {
         if (!currentSolution) return false;
         for (let i = 0; i < 81; i++) {
-        const r = Math.floor(i / 9);
-        const c = i % 9;
-        const v = Number(cells[i].value);
-        if (!v) return false;
-        if (v !== currentSolution[r][c]) return false;
+            const r = Math.floor(i / 9);
+            const c = i % 9;
+            const v = Number(cells[i].value);
+            if (!v) return false;
+            if (v !== currentSolution[r][c]) return false;
         }
         return true;
     };
 
-    const endGame = (msg) => {
+    const endGame = (msg, key = null, vars = {}) => {
         gameOver = true;
         stopTimer();
-        setStatus(msg);
+        setStatus(msg, key, vars);
         cells.forEach((cell) => {
-        if (!cell.classList.contains("fixed")) cell.disabled = true;
+            if (!cell.classList.contains("fixed")) cell.disabled = true;
         });
     };
 
     const winGame = () => {
         gameWon = true;
         stopTimer();
-        setStatus(
-        `¡Sudoku completado! Tiempo: ${formatTime(seconds)} | Errores: ${mistakes}/${maxMistakes} | Pistas usadas: ${hintsUsed}/${maxHints}`
-        );
+
+        const vars = {
+            time: formatTime(seconds),
+            mistakes,
+            maxMistakes,
+            hintsUsed,
+            maxHints
+        };
+        setStatus(t("sudoku_completed", vars), "sudoku_completed", vars);
+
         if (btnPause) btnPause.disabled = true;
         if (btnReset) btnReset.disabled = true;
         if (btnHint) btnHint.disabled = true;
@@ -602,12 +604,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Contadores.
     const countCurrentWrongCells = () => {
         let wrong = 0;
         cells.forEach((cell) => {
-        if (cell.classList.contains("fixed")) return;
-        if (cell.value && cell.classList.contains("error")) wrong += 1;
+            if (cell.classList.contains("fixed")) return;
+            if (cell.value && cell.classList.contains("error")) wrong += 1;
         });
         return wrong;
     };
@@ -615,12 +616,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const refreshStatus = () => {
         if (!currentSolution) return setStatus("");
         const currentWrong = countCurrentWrongCells();
-        setStatus(
-        `Errores totales: ${mistakes}/${maxMistakes} | Errores actuales: ${currentWrong} | Pistas: ${hintsUsed}/${maxHints}`
-        );
+
+        const vars = {
+            mistakes,
+            maxMistakes,
+            currentWrong,
+            hintsUsed,
+            maxHints
+        };
+
+        setStatus(t("sudoku_status_progress", vars), "sudoku_status_progress", vars);
     };
 
-    // Estado y penalización.
     const updateCellStateAndPenalty = (cell) => {
         if (!currentSolution) return;
         if (cell.classList.contains("fixed")) return;
@@ -642,13 +649,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const wasWrong = penalizedCells.get(idx) === true;
 
         if (v === currentSolution[r][c]) {
-            // Correcto.
             penalizedCells.set(idx, false);
 
             cell.classList.add("correct");
             cell.classList.remove("error");
-
-            // Bloquear durante el verde.
             cell.disabled = true;
 
             if (!correctlyFixedCells.has(idx)) {
@@ -656,14 +660,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 correctCount += 1;
             }
 
-            // Verde un rato, luego pasa a fijo.
             setTimeout(() => {
                 cell.classList.remove("correct");
                 cell.classList.add("fixed");
-                // Sigue desactivado.
             }, 800);
         } else {
-            // Incorrecto.
             cell.classList.add("error");
             cell.classList.remove("correct");
 
@@ -674,7 +675,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (mistakes >= maxMistakes) {
                     refreshStatus();
                     disableGameButtonsAfterEnd();
-                    endGame(`Has cometido ${maxMistakes} errores. ¡Fin de la partida!`);
+
+                    const vars = { maxMistakes };
+                    endGame(t("sudoku_game_over_mistakes", vars), "sudoku_game_over_mistakes", vars);
+
                     const diff = difficultySel?.value ?? "easy";
                     SudokuStats.recordLoss({ difficulty: diff, timeSec: seconds, correct: correctCount, mistakes });
                     if (isLoggedIn()) {
@@ -695,9 +699,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Pistas con límite.
     const giveHint = () => {
-        if (!currentSolution) return setStatus("Primero inicia una nueva partida.");
+        if (!currentSolution) return setStatus(t("sudoku_alert_start_first"), "sudoku_alert_start_first");
         if (gameOver || gameWon) return;
 
         if (hintsUsed >= maxHints) {
@@ -712,7 +715,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (!candidates.length) {
-            setStatus("No hay celdas vacías para dar pista.");
+            setStatus(t("sudoku_hint_no_empty"), "sudoku_hint_no_empty");
             return;
         }
 
@@ -725,7 +728,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cell.classList.remove("error", "correct");
         penalizedCells.set(idx, false);
 
-        // Poner como fija y borrar notas de esa celda.
         clearNotes(idx);
         cell.classList.add("fixed");
         cell.disabled = true;
@@ -737,13 +739,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isSolved()) winGame();
     };
 
-    // Reseteo usuario.
     const resetOnlyUserCells = () => {
         if (!currentSolution) return;
         if (gameOver) return;
 
         if (gameWon) {
-            setStatus("No puedes reiniciar: el Sudoku ya está completado.");
+            setStatus(t("sudoku_reset_after_win"), "sudoku_reset_after_win");
             return;
         }
 
@@ -761,7 +762,6 @@ document.addEventListener("DOMContentLoaded", () => {
         refreshStatus();
     };
 
-    // Input y navegación.
     cells.forEach((cell) => {
         cell.setAttribute("autocomplete", "off");
         cell.setAttribute("maxlength", "1");
@@ -777,7 +777,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const idx = getIndex(cell);
 
-            // Navegación con flechas.
             const nav = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
             if (nav.includes(e.key)) {
                 e.preventDefault();
@@ -789,7 +788,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Borrar.
             if (e.key === "Backspace" || e.key === "Delete") {
                 e.preventDefault();
                 cell.value = "";
@@ -799,21 +797,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Números 1..9 (modo normal o modo notas).
             if (/^[1-9]$/.test(e.key)) {
                 e.preventDefault();
                 const n = Number(e.key);
                 writeNumber(cell, n);
 
-                // Avanzar solo en modo normal.
                 if (!notesMode && idx !== -1) focusByIndex(idx + 1);
                 return;
             }
 
-            // Permitir tab para navegar.
             if (e.key === "Tab") return;
 
-            // Bloquear todo lo demás (evita que se escriban letras, 0, etc.).
             e.preventDefault();
         });
 
@@ -827,7 +821,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const clean = sanitizeToSingleDigit(cell.value);
             if (cell.value !== clean) cell.value = clean;
 
-            // Si está el modo notas, no permitir número grande.
             const idx = getIndex(cell);
             if (idx !== -1 && notesMode && clean) {
                 cell.value = "";
@@ -840,7 +833,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Si puso número normal, borrar notas de esta celda.
             if (idx !== -1 && clean) clearNotes(idx);
 
             updateCellStateAndPenalty(cell);
@@ -853,14 +845,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Avanzar si escribió número.
             if (clean) {
                 if (idx !== -1) focusByIndex(idx + 1);
             }
         });
     });
 
-    // Botones.
     if (btnNew) {
         btnNew.addEventListener("click", () => {
             const diff = difficultySel?.value ?? "easy";
@@ -884,14 +874,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (btnReset) btnReset.disabled = false;
             if (btnHint) btnHint.disabled = false;
             if (btnAbandon) btnAbandon.disabled = false;
-
             if (btnSave) btnSave.disabled = false;
             if (btnLoad) btnLoad.disabled = false;
 
-            // Notas: limpiar y OFF
             clearAllNotes();
             setNotesMode(false);
-            // Evitar que esté pausado.
             setPaused(false);
 
             loadPuzzleToUI(gen.puzzle);
@@ -920,23 +907,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         stopTimer();
 
-        // Bloquear todas las celdas.
         cells.forEach(cell => {
             cell.disabled = true;
         });
 
-        // Ocultar overlay de pausa si estaba activo.
         if (boardPause) {
             boardPause.classList.remove("show");
             boardPause.setAttribute("aria-hidden", "true");
         }
-        if(btnReset) btnReset.disabled = true;
-        if(btnAbandon) btnAbandon.disabled = true;
 
-        // Mensaje claro.
-        setStatus("Partida abandonada.", "error");
+        if (btnReset) btnReset.disabled = true;
+        if (btnAbandon) btnAbandon.disabled = true;
 
-        // Desactivar botones.
+        setStatus(t("sudoku_abandoned_status"), "sudoku_abandoned_status");
         disableGameButtonsAfterEnd();
 
         const diff = difficultySel?.value ?? "easy";
@@ -976,10 +959,28 @@ document.addEventListener("DOMContentLoaded", () => {
         btnAbandon.addEventListener("click", () => {
             if (!currentSolution) return;
 
-            const ok = confirm("¿Seguro que quieres abandonar la partida?");
+            const ok = confirm(t("sudoku_confirm_abandon"));
             if (!ok) return;
 
             endGameAbandoned();
         });
     }
+
+    document.addEventListener("languageChanged", () => {
+        if (btnPause && currentSolution && !gameOver && !gameWon) {
+            btnPause.textContent = paused ? t("sudoku_resume") : t("sudoku_pause");
+        }
+
+        if (btnNotes) {
+            btnNotes.textContent = notesMode ? t("sudoku_notes_on") : t("sudoku_notes_off");
+        }
+
+        if (lastStatusKey) {
+            setStatus(t(lastStatusKey, lastStatusVars), lastStatusKey, lastStatusVars);
+        } else if (currentSolution && !gameOver && !gameWon) {
+            refreshStatus();
+        } else if (!currentSolution) {
+            setStatus("");
+        }
+    });
 });

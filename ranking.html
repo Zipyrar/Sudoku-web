@@ -11,30 +11,44 @@
     <!-- Cabecera -->
     <header>
         <div class="header-container">
-            <h1 class="title">Sudoku Web</h1>
+            <h1 class="title">
+                <a href="index.html" data-i18n="site_title">Sudoku Web</a>
+            </h1>
+
             <nav>
                 <ul class="nav-list">
-                    <li><a href="index.html">Volver a inicio</a></li>
-                    <li><a href="game.html">Jugar</a></li>
-                    <li><a href="stats.html">Estadísticas</a></li>
-
-                    <li id="nav-login">
-                        <a href="login.html">Iniciar sesión</a>
-                    </li>
-                    <li id="nav-register">
-                        <a href="register.html">Registrarse</a>
-                    </li>
-                    <li id="nav-logout" style="display:none;">
-                        <a href="php/logout.php">Cerrar sesión</a>
-                    </li>
-                    <li id="nav-delete-account" style="display:none;">
-                        <a href="php/delete_account.php"
-                           onclick="return confirm('¿Seguro que quieres eliminar tu cuenta?');">
-                            Eliminar cuenta
-                        </a>
-                    </li>
+                    <li><a href="index.html" data-i18n="nav_home">Volver a inicio</a></li>
+                    <li><a href="game.html" data-i18n="nav_play">Jugar</a></li>
+                    <li><a href="stats.html" data-i18n="nav_stats">Estadísticas</a></li>
                 </ul>
             </nav>
+
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="dropbtn" id="langButton">ES ▼</button>
+                    <div class="dropdown-content">
+                        <a href="?lang=es">ES</a>
+                        <a href="?lang=en">EN</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" id="userButton" data-i18n="user_guest">Usuario ▼</button>
+
+                    <div class="dropdown-content" id="guestMenu">
+                        <a href="login.html" data-i18n="login">Iniciar sesión</a>
+                        <a href="register.html" data-i18n="register">Registrarse</a>
+                    </div>
+
+                    <div class="dropdown-content hidden" id="userMenu">
+                        <a href="php/logout.php" data-i18n="user_logout">Cerrar sesión</a>
+                        <a href="php/delete_account.php" class="danger"
+                           data-i18n="user_delete" id="deleteAccountBtn">
+                            Eliminar cuenta
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -44,8 +58,8 @@
         <!-- Cabecera de sección -->
         <section class="ranking-header">
             <div>
-                <h2>Ranking global</h2>
-                <p class="ranking-subtitle">
+                <h2 data-i18n="ranking_title">Ranking global</h2>
+                <p class="ranking-subtitle" data-i18n="ranking_subtitle">
                     Compara tu progreso con el resto de jugadores.
                     Filtra por categoría y dificultad.
                 </p>
@@ -54,21 +68,21 @@
 
         <!-- Filtros: categoría -->
         <div class="tab-group" id="cat-tabs" role="tablist" aria-label="Categoría">
-            <label>Categoría:</label>
-            <button class="tab-btn active" data-cat="most_wins"      role="tab">Más victorias</button>
-            <button class="tab-btn"        data-cat="best_time"      role="tab">Mejor tiempo</button>
-            <button class="tab-btn"        data-cat="best_accuracy"  role="tab">Mejor precisión</button>
-            <button class="tab-btn"        data-cat="fewest_hints"   role="tab">Menos pistas</button>
+            <label data-i18n="ranking_category_label">Categoría:</label>
+            <button class="tab-btn active" data-cat="most_wins" role="tab" data-i18n="ranking_cat_most_wins">Más victorias</button>
+            <button class="tab-btn" data-cat="best_time" role="tab" data-i18n="ranking_cat_best_time">Mejor tiempo</button>
+            <button class="tab-btn" data-cat="best_accuracy" role="tab" data-i18n="ranking_cat_best_accuracy">Mejor precisión</button>
+            <button class="tab-btn" data-cat="fewest_hints" role="tab" data-i18n="ranking_cat_fewest_hints">Menos pistas</button>
         </div>
 
         <!-- Filtros: dificultad -->
         <div class="tab-group" id="diff-tabs" role="tablist" aria-label="Dificultad">
-            <label>Dificultad:</label>
-            <button class="tab-btn active" data-diff="all"    role="tab">Todas</button>
-            <button class="tab-btn"        data-diff="easy"   role="tab">Fácil</button>
-            <button class="tab-btn"        data-diff="medium" role="tab">Media</button>
-            <button class="tab-btn"        data-diff="hard"   role="tab">Difícil</button>
-            <button class="tab-btn"        data-diff="expert" role="tab">Experta</button>
+            <label data-i18n="ranking_difficulty_label">Dificultad:</label>
+            <button class="tab-btn active" data-diff="all"    role="tab" data-i18n="ranking_all">Todas</button>
+            <button class="tab-btn"        data-diff="easy"   role="tab" data-i18n="ranking_easy">Fácil</button>
+            <button class="tab-btn"        data-diff="medium" role="tab" data-i18n="ranking_medium">Media</button>
+            <button class="tab-btn"        data-diff="hard"   role="tab" data-i18n="ranking_hard">Difícil</button>
+            <button class="tab-btn"        data-diff="expert" role="tab" data-i18n="ranking_expert">Experta</button>
         </div>
 
         <!-- Tabla de ranking -->
@@ -88,7 +102,7 @@
                             <td colspan="4">
                                 <div class="ranking-loading">
                                     <div class="spinner"></div>
-                                    <p>Cargando ranking…</p>
+                                    <p data-i18n="ranking_loading">Cargando ranking…</p>
                                 </div>
                             </td>
                         </tr>
@@ -96,7 +110,7 @@
                 </table>
             </div>
 
-            <p class="min-note" id="min-note" style="display:none;">
+            <p class="min-note" id="min-note" style="display:none;" data-i18n="ranking_min_note">
                 * Se requieren mínimo 3 victorias para aparecer en este ranking.
             </p>
         </section>
@@ -105,9 +119,11 @@
 
     <!-- Pie de página -->
     <footer>
-        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+        <p data-i18n="footer_copyright">2026 - Sudoku Web | Proyecto Intermodular DAW</p>
     </footer>
 
+    <script src="assets/js/i18n.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
     <script src="assets/js/auth_ui.js" defer></script>
     <script src="assets/js/ranking.js" defer></script>
 </body>

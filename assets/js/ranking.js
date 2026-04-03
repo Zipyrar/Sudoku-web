@@ -1,72 +1,85 @@
 (() => {
     'use strict';
 
-    /* Estado */
+    // Estado.
     let currentCategory   = 'most_wins';
     let currentDifficulty = 'all';
     let currentUser       = null;
 
-    /* Configuración por categoría */
+    // Configuración por categoría.
     const CATEGORIES = {
         most_wins: {
-            label: 'Más victorias',
-            desc:  'Jugadores con mayor número de partidas ganadas.',
+            label: () => t('ranking_cat_most_wins'),
+            desc:  () => t('ranking_desc_most_wins'),
             minNote: false,
-            heads: () => ['#', 'Jugador', 'Victorias', 'Tiempo medio'],
+            heads: () => [t('ranking_head_pos'), t('ranking_head_user'), t('ranking_head_wins'), t('ranking_head_avg_time')],
             row:   (r, pos, me) => [
                 rankCell(pos),
                 userCell(r.username, me),
-                `<span class="stat-val">${r.wins}</span><span class="stat-sub">victorias</span>`,
+                `<span class="stat-val">${r.wins}</span><span class="stat-sub">${t('ranking_stat_wins')}</span>`,
                 `<span class="stat-val">${formatTime(r.avg_time)}</span>`,
             ],
         },
         best_time: {
-            label: 'Mejor tiempo',
-            desc:  'Tiempo más rápido en completar un sudoku ganado.',
+            label: () => t('ranking_cat_best_time'),
+            desc:  () => t('ranking_desc_best_time'),
             minNote: false,
-            heads: () => ['#', 'Jugador', 'Mejor tiempo', 'Victorias'],
+            heads: () => [t('ranking_head_pos'), t('ranking_head_user'), t('ranking_head_best_time'), t('ranking_head_wins')],
             row:   (r, pos, me) => [
                 rankCell(pos),
                 userCell(r.username, me),
                 `<span class="stat-val">${formatTime(r.best_time)}</span>`,
-                `<span class="stat-val">${r.wins}</span><span class="stat-sub">victorias</span>`,
+                `<span class="stat-val">${r.wins}</span><span class="stat-sub">${t('ranking_stat_wins')}</span>`,
             ],
         },
         best_accuracy: {
-            label: 'Mejor precisión',
-            desc:  'Jugadores con menor número de errores de media. Mínimo 3 victorias.',
+            label: () => t('ranking_cat_best_accuracy'),
+            desc:  () => t('ranking_desc_best_accuracy'),
             minNote: true,
-            heads: () => ['#', 'Jugador', 'Errores (media)', 'Victorias'],
+            heads: () => [t('ranking_head_pos'), t('ranking_head_user'), t('ranking_head_avg_mistakes'), t('ranking_head_wins')],
             row:   (r, pos, me) => [
                 rankCell(pos),
                 userCell(r.username, me),
-                `<span class="stat-val">${r.avg_mistakes.toFixed(2)}</span><span class="stat-sub">errores/partida</span>`,
-                `<span class="stat-val">${r.wins}</span><span class="stat-sub">victorias</span>`,
+                `<span class="stat-val">${r.avg_mistakes.toFixed(2)}</span><span class="stat-sub">${t('ranking_stat_errors_per_game')}</span>`,
+                `<span class="stat-val">${r.wins}</span><span class="stat-sub">${t('ranking_stat_wins')}</span>`,
             ],
         },
         fewest_hints: {
-            label: 'Menos pistas',
-            desc:  'Jugadores que menos pistas usaron de media. Mínimo 3 victorias.',
+            label: () => t('ranking_cat_fewest_hints'),
+            desc:  () => t('ranking_desc_fewest_hints'),
             minNote: true,
-            heads: () => ['#', 'Jugador', 'Pistas (media)', 'Total pistas'],
+            heads: () => [t('ranking_head_pos'), t('ranking_head_user'), t('ranking_head_avg_hints'), t('ranking_head_total_hints')],
             row:   (r, pos, me) => [
                 rankCell(pos),
                 userCell(r.username, me),
-                `<span class="stat-val">${r.avg_hints.toFixed(2)}</span><span class="stat-sub">pistas/partida</span>`,
+                `<span class="stat-val">${r.avg_hints.toFixed(2)}</span><span class="stat-sub">${t('ranking_stat_hints_per_game')}</span>`,
                 `<span class="stat-val">${r.total_hints}</span>`,
             ],
         },
     };
 
     const DIFF_LABELS = {
-        all:    'Todas las dificultades',
-        easy:   'Fácil',
-        medium: 'Media',
-        hard:   'Difícil',
-        expert: 'Experta',
+        all:    () => t('ranking_all_difficulties'),
+        easy:   () => t('sudoku_difficulty_easy'),
+        medium: () => t('sudoku_difficulty_medium'),
+        hard:   () => t('sudoku_difficulty_hard'),
+        expert: () => t('sudoku_difficulty_expert'),
     };
 
-    /* Helpers de formato */
+    // Traducir.
+    function getLang() {
+        if (typeof window.getSudokuLang === "function") {
+            return window.getSudokuLang();
+        }
+        return localStorage.getItem("sudoku_lang") || "es";
+    }
+
+    function t(key) {
+        const lang = getLang();
+        return (window.texts && window.texts[lang] && window.texts[lang][key]) || key;
+    }
+
+    // Helpers de formato.
     function formatTime(sec) {
         if (sec == null || !Number.isFinite(+sec)) return '--:--';
         sec = Math.max(0, Math.floor(+sec));
@@ -91,14 +104,14 @@
 
     function userCell(username, me) {
         const youTag = (me && username === me)
-            ? `<span class="you-badge">Tú</span>`
+            ? `<span class="you-badge">${t("ranking_you")}</span>`
             : '';
         return `<span class="username-cell">${escHtml(username)}${youTag}</span>`;
     }
 
     function diffBadge(diff) {
         const cls = diff === 'all' ? 'badge-all' : `badge-${diff}`;
-        return `<span class="badge ${cls}">${DIFF_LABELS[diff] || diff}</span>`;
+        return `<span class="badge ${cls}">${(DIFF_LABELS[diff] ? DIFF_LABELS[diff]() : diff)}</span>`;
     }
 
     function escHtml(str) {
@@ -109,20 +122,20 @@
             .replace(/"/g, '&quot;');
     }
 
-    /* Obtener usuario actual */
+    // Obtener usuario actual.
     function getCurrentUser() {
         const u = (localStorage.getItem('sudoku_current_user') || '').trim();
         return u || null;
     }
 
-    /* Render */
+    // Render.
     function setLoading() {
         document.getElementById('ranking-tbody').innerHTML = `
             <tr>
                 <td colspan="4">
                     <div class="ranking-loading">
                         <div class="spinner"></div>
-                        <p>Cargando ranking…</p>
+                        <p>${t("ranking_loading")}</p>
                     </div>
                 </td>
             </tr>`;
@@ -133,8 +146,8 @@
         const diff = currentDifficulty;
 
         document.getElementById('ranking-title').innerHTML =
-            `${cat.label} · ${diffBadge(diff)}`;
-        document.getElementById('ranking-desc').textContent = cat.desc;
+            `${cat.label()} · ${diffBadge(diff)}`;
+        document.getElementById('ranking-desc').textContent = cat.desc();
 
         const minNote = document.getElementById('min-note');
         minNote.style.display = cat.minNote ? '' : 'none';
@@ -146,31 +159,31 @@
         const thead = document.getElementById('ranking-thead');
         const tbody = document.getElementById('ranking-tbody');
 
-        /* Cabeceras */
+        // Cabeceras.
         const heads = cat.heads();
         thead.innerHTML = `<tr>${heads.map(h => `<th>${h}</th>`).join('')}</tr>`;
 
-        /* Filas vacías */
+        // Filas vacías.
         if (!rows || rows.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="${heads.length}">
                         <div class="ranking-empty">
-                            Todavía no hay datos suficientes para este ranking.
+                            ${t("ranking_empty")}
                         </div>
                     </td>
                 </tr>`;
             return;
         }
 
-        /* Filas de datos */
+        // Filas de datos.
         tbody.innerHTML = rows.map((r, i) => {
             const cells = cat.row(r, i + 1, me);
             return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
         }).join('');
     }
 
-    /* Fetch */
+    // Fetch.
     async function loadRanking() {
         setLoading();
         renderHeader();
@@ -194,14 +207,14 @@
                 <tr>
                     <td colspan="4">
                         <div class="ranking-empty">
-                            Error al cargar el ranking. Comprueba tu conexión.
+                            ${t("ranking_error")}
                         </div>
                     </td>
                 </tr>`;
         }
     }
 
-    /* Tabs */
+    // Tabs.
     function bindTabs(groupId, dataAttr, onChange) {
         const group = document.getElementById(groupId);
         group.querySelectorAll('.tab-btn').forEach(btn => {
@@ -213,7 +226,7 @@
         });
     }
 
-    /* Init */
+    // Init.
     function init() {
         currentUser = getCurrentUser();
 
@@ -231,4 +244,12 @@
     }
 
     document.addEventListener('DOMContentLoaded', init);
+
+    document.addEventListener("languageChanged", () => {
+        loadRanking();
+    });
+
+    window.addEventListener("pageshow", () => {
+        loadRanking();
+    });
 })();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,34 +11,44 @@
     <!-- Cabecera -->
     <header>
         <div class="header-container">
-            <h1 class="title">Sudoku Web</h1>
+            <h1 class="title">
+                <a href="index.html" data-i18n="site_title">Sudoku Web</a>
+            </h1>
+
             <nav>
-                <!-- Navegación principal -->
                 <ul class="nav-list">
-                    <li><a href="index.html">Volver a inicio</a></li>
-                    <li><a href="game.html">Jugar</a></li>
+                    <li><a href="index.html" data-i18n="nav_home">Volver a inicio</a></li>
+                    <li><a href="game.html" data-i18n="nav_play">Jugar</a></li>
                     <li><a href="ranking.html">Ranking</a></li>
-
-                    <li id="nav-login">
-                        <a href="login.html">Iniciar sesión</a>
-                    </li>
-
-                    <li id="nav-register">
-                        <a href="register.html">Registrarse</a>
-                    </li>
-
-                    <li id="nav-logout" style="display:none;">
-                        <a href="php/logout.php">Cerrar sesión</a>
-                    </li>
-
-                    <li id="nav-delete-account" style="display:none;">
-                        <a href="php/delete_account.php"
-                        onclick="return confirm('¿Seguro que quieres eliminar tu cuenta?');">
-                            Eliminar cuenta
-                        </a>
-                    </li>
                 </ul>
             </nav>
+
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="dropbtn" id="langButton">ES ▼</button>
+                    <div class="dropdown-content">
+                        <a href="?lang=es">ES</a>
+                        <a href="?lang=en">EN</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" id="userButton" data-i18n="user_guest">Usuario ▼</button>
+
+                    <div class="dropdown-content" id="guestMenu">
+                        <a href="login.html" data-i18n="login">Iniciar sesión</a>
+                        <a href="register.html" data-i18n="register">Registrarse</a>
+                    </div>
+
+                    <div class="dropdown-content hidden" id="userMenu">
+                        <a href="php/logout.php" data-i18n="user_logout">Cerrar sesión</a>
+                        <a href="php/delete_account.php" class="danger"
+                            data-i18n="user_delete" id="deleteAccountBtn">
+                            Eliminar cuenta
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -46,55 +56,58 @@
     <main>
         <section class="stats-header">
             <div>
-                <h2>Mis estadísticas</h2>
-                <p class="main-phrase">Aquí verás tu progreso, tus tiempos, y tu historial de partidas.</p>
+                <h2 data-i18n="stats_title">Mis estadísticas</h2>
+                <p class="main-phrase" data-i18n="stats_description">Aquí verás tu progreso, tus tiempos, y tu historial de partidas.</p>
             </div>
 
             <!-- Usuario -->
-            <p class="user-badge">Usuario: <strong>Invitado</strong></p>
+            <p class="user-badge">
+                <span data-i18n="stats_user_label">Usuario:</span>
+                <strong id="statsUsername">Invitado</strong>
+            </p>
         </section>
 
         <!-- Resumen -->
         <section class="stats-card">
             <article class="card">
-                <h3>Partidas jugadas</h3>
+                <h3 data-i18n="stats_games_played_title">Partidas jugadas</h3>
                 <p class="stat-number">0</p>
-                <p class="article-phrase">Total de partidas iniciadas</p>
+                <p class="article-phrase" data-i18n="stats_games_played">Total de partidas iniciadas</p>
             </article>
             <article class="card">
-                <h3>Partidas completadas</h3>
+                <h3 data-i18n="stats_games_completed_title">Partidas completadas</h3>
                 <p class="stat-number">0</p>
-                <p class="article-phrase">Partidas resueltas correctamente</p>
+                <p class="article-phrase" data-i18n="stats_games_completed">Partidas resueltas correctamente</p>
             </article>
             <article class="card">
-                <h3>Mejor tiempo</h3>
+                <h3 data-i18n="stats_best_time_title">Mejor tiempo</h3>
                 <p class="stat-number">--:--</p>
-                <p class="article-phrase">Tu récord personal</p>
+                <p class="article-phrase" data-i18n="stats_best_time">Tu récord personal</p>
             </article>
             <article class="card">
-                <h3>Dificultad favorita</h3>
+                <h3 data-i18n="stats_favorite_difficulty_title">Dificultad favorita</h3>
                 <p class="stat-number">-</p>
-                <p class="article-phrase">La que más juegas</p>
+                <p class="article-phrase" data-i18n="stats_favorite_difficulty">La que más juegas</p>
             </article>
         </section>
 
         <!-- Historial -->
         <section class="history">
             <header class="section-title">
-                <h3>Historial de partidas</h3>
-                <p class="history-phrase">Inicia sesión para ver tu historial</p>
+                <h3 data-i18n="stats_history_title">Historial de partidas</h3>
+                <p class="history-phrase" data-i18n="stats_history_phrase">Inicia sesión para ver tu historial</p>
             </header>
 
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Dificultad</th>
-                            <th>Tiempo</th>
-                            <th>Aciertos</th>
-                            <th>Errores</th>
-                            <th>Estado</th>
+                            <th data-i18n="stats_history_date">Fecha</th>
+                            <th data-i18n="stats_history_difficulty">Dificultad</th>
+                            <th data-i18n="stats_history_time">Tiempo</th>
+                            <th data-i18n="stats_history_correct">Aciertos</th>
+                            <th data-i18n="stats_history_incorrect">Errores</th>
+                            <th data-i18n="stats_history_status">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -104,7 +117,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td><span class="badge badge-muted">Sin datos</span></td>
+                            <td><span class="badge badge-muted" data-i18n="stats_history_empty">Sin datos</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -113,7 +126,7 @@
 
         <!-- Acciones -->
         <section class="stats-actions">
-            <button class="btn" type="button" id="btn-reset-stats" disabled>
+            <button class="btn" type="button" id="btn-reset-stats" disabled data-i18n="stats_reset_button">
                 Reiniciar estadísticas
             </button>
         </section>
@@ -121,10 +134,12 @@
 
     <!-- Pie de página -->
     <footer>
-        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+        <p data-i18n="footer_copyright">2026 - Sudoku Web | Proyecto Intermodular DAW</p>
     </footer>
 
-    <script src="assets/js/stats.js"></script>
+    <script defer src="assets/js/i18n.js"></script>
     <script defer src="assets/js/auth_ui.js"></script>
+    <script defer src="assets/js/main.js"></script>
+    <script defer src="assets/js/stats.js"></script>
 </body>
 </html>

@@ -11,34 +11,44 @@
     <!-- Cabecera -->
     <header>
         <div class="header-container">
-            <h1 class="title">Sudoku Web</h1>
+            <h1 class="title">
+                <a href="index.html" data-i18n="site_title">Sudoku Web</a>
+            </h1>
+
             <nav>
-                <!-- Navegación principal -->
                 <ul class="nav-list">
-                    <li><a href="index.html">Volver a inicio</a></li>
-                    <li><a href="stats.html">Estadísticas</a></li>
-                    <li><a href="ranking.html">Ranking</a></li>
-
-                    <li id="nav-login">
-                        <a href="login.html">Iniciar sesión</a>
-                    </li>
-
-                    <li id="nav-register">
-                        <a href="register.html">Registrarse</a>
-                    </li>
-
-                    <li id="nav-logout" style="display:none;">
-                        <a href="php/logout.php">Cerrar sesión</a>
-                    </li>
-
-                    <li id="nav-delete-account" style="display:none;">
-                        <a href="php/delete_account.php"
-                        onclick="return confirm('¿Seguro que quieres eliminar tu cuenta?');">
-                            Eliminar cuenta
-                        </a>
-                    </li>
+                    <li><a href="index.html" data-i18n="nav_home">Volver a inicio</a></li>
+                    <li><a href="stats.html" data-i18n="nav_stats">Estadísticas</a></li>
+                    <li><a href="ranking.html" data-i18n="nav_ranking">Ranking</a></li>
                 </ul>
             </nav>
+
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="dropbtn" id="langButton">ES ▼</button>
+                    <div class="dropdown-content">
+                        <a href="?lang=es">ES</a>
+                        <a href="?lang=en">EN</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" id="userButton" data-i18n="user_guest">Usuario ▼</button>
+
+                    <div class="dropdown-content" id="guestMenu">
+                        <a href="login.html" data-i18n="login">Iniciar sesión</a>
+                        <a href="register.html" data-i18n="register">Registrarse</a>
+                    </div>
+
+                    <div class="dropdown-content hidden" id="userMenu">
+                        <a href="php/logout.php" data-i18n="user_logout">Cerrar sesión</a>
+                        <a href="php/delete_account.php" class="danger"
+                           data-i18n="user_delete" id="deleteAccountBtn">
+                            Eliminar cuenta
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -47,27 +57,27 @@
         <!-- Cabecera del juego -->
         <section class="game-header">
             <div>
-                <h2>Partida de Sudoku</h2>
-                <p class="main-phrase">
+                <h2 data-i18n="sudoku_game_title">Partida de Sudoku</h2>
+                <p class="main-phrase" data-i18n="sudoku_game_desc">
                     Selecciona dificultad, inicia la partida y completa el tablero sin repetir números en filas, columnas y bloques.
                 </p>
             </div>
-        
+
             <!-- Selector de dificultad -->
             <form class="difficulty-form" action="#" method="get">
-                <label for="difficulty" class="one-difficulty"></label>
-                    <select id="difficulty" name="difficulty">
-                        <option value="easy">Fácil</option>
-                        <option value="medium">Media</option>
-                        <option value="hard">Difícil</option>
-                        <option value="expert">Experto</option>
+                <label for="difficulty" class="one-difficulty" data-i18n="sudoku_difficulty">Dificultad:</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="easy" data-i18n="sudoku_difficulty_easy">Fácil</option>
+                    <option value="medium" data-i18n="sudoku_difficulty_medium">Media</option>
+                    <option value="hard" data-i18n="sudoku_difficulty_hard">Difícil</option>
+                    <option value="expert" data-i18n="sudoku_difficulty_expert">Experto</option>
                 </select>
 
-                <button type="button" class="btn btn-primary" id="btn-new-game">
+                <button type="button" class="btn btn-primary" id="btn-new-game" data-i18n="sudoku_new_game">
                     Nueva partida
                 </button>
                 <label class="timer" id="timer">00:00</label>
-                <button type="button" class="btn btn-danger" id="btn-abandon">
+                <button type="button" class="btn btn-danger" id="btn-abandon" data-i18n="sudoku_abandon">
                     Abandonar
                 </button>
             </form>
@@ -77,7 +87,7 @@
             <!-- Tablero -->
             <section class="board-section">
                 <div class="board" role="grid">
-                     <!-- Fila 1 -->
+                    <!-- Fila 1 -->
                     <div class="board-row" role="row">
                         <input class="cell" type="text" maxlength="1" readonly data-row="0" data-col="0">
                         <input class="cell" type="text" maxlength="1" readonly data-row="0" data-col="1">
@@ -193,13 +203,11 @@
                         <input class="cell" type="text" maxlength="1" readonly data-row="8" data-col="7">
                         <input class="cell" type="text" maxlength="1" readonly data-row="8" data-col="8">
                     </div>
-
-                    <!-- Mostrar Sudoku pausado -->
                 </div>
 
                 <!-- Overlay de pausa -->
                 <div class="board-pause" id="board-pause" aria-hidden="true">
-                    <div class="board-pause-box">PAUSADO</div>
+                    <div class="board-pause-box" data-i18n="sudoku_paused">PAUSADO</div>
                 </div>
 
                 <!-- Teclado numérico para móviles -->
@@ -232,30 +240,30 @@
             <!-- Panel lateral -->
             <aside class="side-panel">
                 <div class="panel-card">
-                    <h3>Opciones</h3>
+                    <h3 data-i18n="sudoku_options">Opciones</h3>
                     <div class="panel-actions">
-                        <button type="button" class="btn" id="btn-pause">Pausar</button>
-                        <button type="button" class="btn" id="btn-reset">Reiniciar</button>
-                        <button type="button" class="btn" id="btn-hint">Pista</button>
+                        <button type="button" class="btn" id="btn-pause" data-i18n="sudoku_pause">Pausar</button>
+                        <button type="button" class="btn" id="btn-reset" data-i18n="sudoku_reset">Reiniciar</button>
+                        <button type="button" class="btn" id="btn-hint" data-i18n="sudoku_hint">Pista</button>
                     </div>
                 </div>
 
                 <div class="panel-card">
-                    <h3>Guardar / Cargar</h3>
+                    <h3 data-i18n="sudoku_save_load">Guardar / Cargar</h3>
                     <div class="panel-actions">
-                        <button type="button" class="btn" id="btn-save">Guardar partida</button>
-                        <button type="button" class="btn" id="btn-load">Cargar partida</button>
+                        <button type="button" class="btn" id="btn-save" data-i18n="sudoku_save">Guardar partida</button>
+                        <button type="button" class="btn" id="btn-load" data-i18n="sudoku_load">Cargar partida</button>
                     </div>
                 </div>
 
                 <div class="panel-card">
-                    <h3>Ayuda</h3>
+                    <h3 data-i18n="sudoku_help">Ayuda</h3>
                     <ul class="help-list">
-                        <li>No repitas números en una misma fila.</li>
-                        <li>No repitas números en una misma columna.</li>
-                        <li>No repitas números en un bloque 3x3.</li>
-                        <li>Fíjate en los números por las cuatro direcciones del hueco.</li>
-                        <li>Apunta en un hueco los posibles números correctos con las notas.</li>
+                        <li data-i18n="sudoku_help_row">No repitas números en una misma fila.</li>
+                        <li data-i18n="sudoku_help_column">No repitas números en una misma columna.</li>
+                        <li data-i18n="sudoku_help_block">No repitas números en un bloque 3x3.</li>
+                        <li data-i18n="sudoku_help_directions">Fíjate en los números por las cuatro direcciones del hueco.</li>
+                        <li data-i18n="sudoku_help_notes">Apunta en un hueco los posibles números correctos con las notas.</li>
                     </ul>
                 </div>
             </aside>
@@ -264,11 +272,13 @@
 
     <!-- Pie de página -->
     <footer>
-        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+        <p data-i18n="footer_copyright">2026 - Sudoku Web | Proyecto Intermodular DAW</p>
     </footer>
 
-    <script src="assets/js/sudoku_game.js"></script>
-    <script defer src="assets/js/stats.js"></script>
+    <script defer src="assets/js/i18n.js"></script>
     <script defer src="assets/js/auth_ui.js"></script>
+    <script defer src="assets/js/main.js"></script>
+    <script defer src="assets/js/sudoku_game.js"></script>
+    <script defer src="assets/js/stats.js"></script>
 </body>
 </html>

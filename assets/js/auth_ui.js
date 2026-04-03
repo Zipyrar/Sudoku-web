@@ -1,4 +1,16 @@
 (async () => {
+    function getLang() {
+        if (typeof window.getSudokuLang === "function") {
+            return window.getSudokuLang();
+        }
+        return localStorage.getItem("sudoku_lang") || "es";
+    }
+
+    function t(key) {
+        const lang = getLang();
+        return (window.texts && window.texts[lang] && window.texts[lang][key]) || key;
+    }
+
     async function getUserSession() {
         try {
             const res = await fetch('php/user_session.php', { credentials: 'include' });
@@ -26,6 +38,12 @@
         }
     }
 
+    function applyUserBadge(us) {
+        const userStrong = document.querySelector('.user-badge strong');
+        if (!userStrong) return;
+        userStrong.textContent = us.loggedIn ? us.username : t("stats_guest");
+    }
+
     const us = await getUserSession();
 
     const navLogin = document.getElementById('nav-login');
@@ -47,10 +65,7 @@
         localStorage.removeItem('sudoku_current_user');
     }
 
-    const userStrong = document.querySelector('.user-badge strong');
-    if (userStrong) {
-        userStrong.textContent = us.loggedIn ? us.username : 'Invitado';
-    }
+    applyUserBadge(us);
 
     const logoutBtn = document.getElementById('btn-logout');
     const deleteBtn = document.getElementById('btn-delete-account');
@@ -62,6 +77,10 @@
         if (logoutBtn) logoutBtn.style.display = 'none';
         if (deleteBtn) deleteBtn.style.display = 'none';
     }
+
+    document.addEventListener("languageChanged", () => {
+        applyUserBadge(us);
+    });
 
     await setCsrfToken();
 })();

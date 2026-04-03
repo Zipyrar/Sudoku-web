@@ -1,3 +1,16 @@
+// Traducir.
+function getLang() {
+    if (typeof window.getSudokuLang === "function") {
+        return window.getSudokuLang();
+    }
+    return localStorage.getItem("sudoku_lang") || "es";
+}
+
+function t(key) {
+    const lang = getLang();
+    return (window.texts && window.texts[lang] && window.texts[lang][key]) || key;
+}
+
 function showMessage(form, text, type = 'error') {
     let box = form.querySelector('.form-message');
     if (!box) {
@@ -14,10 +27,12 @@ function showMessage(form, text, type = 'error') {
     box.style.color = type === 'ok' ? 'rgba(34,197,94,0.95)' : 'rgba(248,113,113,0.95)';
 }
 
+// Comprobar correo.
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Registro.
 function registerValidation(form) {
     const username = form.querySelector('#username');
     const email = form.querySelector('#email');
@@ -32,35 +47,36 @@ function registerValidation(form) {
 
         if (un.length < 3 || un.length > 20) {
             e.preventDefault();
-            showMessage(form, 'El nombre de usuario debe tener entre 3 y 20 caracteres.');
+            showMessage(form, t('session_username_length'));
             username?.focus();
             return;
         }
         if (!isValidEmail(em)) {
             e.preventDefault();
-            showMessage(form, 'El correo no es válido.');
+            showMessage(form, t('session_invalid_email'));
             email?.focus();
             return;
         }
         if (pw.length < 6) {
             e.preventDefault();
-            showMessage(form, 'La contraseña debe tener un mínimo de 6 caracteres.');
+            showMessage(form, t('session_password_short'));
             password?.focus();
             return;
         }
         if (pw !== cf) {
             e.preventDefault();
-            showMessage(form, 'Las contraseñas no coinciden.');
+            showMessage(form, t('session_password_mismatch'));
             confirm?.focus();
             return;
         }
         if (form.getAttribute('action') === '#') {
             e.preventDefault();
-            showMessage(form, 'Registro correcto.', 'ok');
+            showMessage(form, t('session_register_ok'), 'ok');
         }
     });
 }
 
+// Inicio sesión.
 function loginValidation(form) {
     const email = form.querySelector('#email');
     const password = form.querySelector('#password');
@@ -71,19 +87,19 @@ function loginValidation(form) {
 
         if (!isValidEmail(em)) {
             e.preventDefault();
-            showMessage(form, 'El correo no es válido.');
+            showMessage(form, t('session_invalid_email'));
             email?.focus();
             return;
         }
         if (pw.length < 6) {
             e.preventDefault();
-            showMessage(form, 'La contraseña debe tener un mínimo de 6 caracteres.');
+            showMessage(form, t('session_password_short'));
             password?.focus();
             return;
         }
         if (form.getAttribute('action') === '#') {
             e.preventDefault();
-            showMessage(form, 'Inicio de sesión correcto.', 'ok');
+            showMessage(form, t('session_login_ok'), 'ok');
         }
     });
 }

@@ -26,7 +26,8 @@
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die('El correo no es válido.');
+        header('Location: ../login.html?error=invalid_email');
+        exit();
     }
 
     if (strlen($pass1) < 6) {

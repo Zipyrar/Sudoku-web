@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,52 +11,74 @@
     <!-- Cabecera -->
     <header>
         <div class="header-container">
-            <h1 class="title">Sudoku Web</h1>
+            <h1 class="title">
+                <a href="index.html" data-i18n="site_title">Sudoku Web</a>
+            </h1>
+
             <nav>
-                <!-- Navegación principal -->
                 <ul class="nav-list">
-                    <li><a href="index.html">Volver a inicio</a></li>
-                    <li><a href="game.html">Jugar</a></li>
-                    <li><a href="stats.html">Estadísticas</a></li>
-                    <li><a href="ranking.html">Ranking</a></li>
-                    <li><a href="register.html">Registrarse</a></li>
+                    <li><a href="index.html" data-i18n="nav_home">Volver a inicio</a></li>
+                    <li><a href="game.html" data-i18n="nav_play">Jugar</a></li>
+                    <li><a href="stats.html" data-i18n="nav_stats">Estadísticas</a></li>
+                    <li><a href="ranking.html" data-i18n="nav_ranking">Ranking</a></li>
                 </ul>
             </nav>
+
+            <div class="header-actions">
+                <div class="dropdown">
+                    <button class="dropbtn" id="langButton">ES ▼</button>
+                    <div class="dropdown-content">
+                        <a href="?lang=es">ES</a>
+                        <a href="?lang=en">EN</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" id="userButton" data-i18n="user_guest">Usuario ▼</button>
+
+                    <div class="dropdown-content" id="guestMenu">
+                        <a href="login.html" data-i18n="login">Iniciar sesión</a>
+                        <a href="register.html" data-i18n="register">Registrarse</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <!-- Principal -->
     <main>
         <section class="form-section">
-            <h2>Iniciar sesión</h2>
-            <p class="main-phrase">Accede a tu cuenta para continuar tus partidas y consultar tus estadísticas.</p>
+            <h2 data-i18n="login_title">Iniciar sesión</h2>
+            <p class="main-phrase" data-i18n="login_description">Accede a tu cuenta para continuar tus partidas y consultar tus estadísticas.</p>
             <!-- Formulario -->
             <form action="php/login.php" method="post">
                 <div class="form-group">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="ejemplo@gmail.com" required>
+                    <label for="email" data-i18n="form_email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" data-i18n="form_email_placeholder" placeholder="ejemplo@gmail.com" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="******" required minlength="6">
+                    <label for="password" data-i18n="form_password">Contraseña</label>
+                    <input type="password" id="password" name="password" data-i18n="form_password_placeholder" placeholder="******" required minlength="6">
                 </div>
-                <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                <button type="submit" class="btn btn-primary" data-i18n="login_button">Iniciar sesión</button>
                 <input type="hidden" name="csrf_token" value="">
             </form>
 
             <p class="form-footer">
-                ¿Aún no tienes cuenta?
-                <a href="register.html">Regístrate aquí</a>
+                <span data-i18n="login_no_account">¿Aún no tienes cuenta?</span>
+                <a href="register.html" data-i18n="register_link">Regístrate aquí</a>
             </p>
         </section>
     </main>
 
     <!-- Pie de página -->
     <footer>
-        <p>2026 - Sudoku Web | Proyecto Intermodular DAW</p>
+        <p data-i18n="footer_copyright">2026 - Sudoku Web | Proyecto Intermodular DAW</p>
     </footer>
 
-    <script defer src="assets/js/sessions.js"></script>
+    <script defer src="assets/js/i18n.js"></script>
     <script defer src="assets/js/auth_ui.js"></script>
+    <script defer src="assets/js/main.js"></script>
+    <script defer src="assets/js/sessions.js"></script>
 </body>
 </html>
